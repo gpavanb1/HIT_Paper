@@ -1,0 +1,20 @@
+# Latex
+*.aux
+*.bbl
+*.blg
+*.fls
+*.log
+*.out
+*.pdf
+
+# Virtual environment
+venv
+
+# Papers
+papers/
+
+# Mac
+.DS_Store
+
+# Input
+input/
