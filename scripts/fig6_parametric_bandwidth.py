@@ -46,28 +46,36 @@ def generate_figure():
     print("Generating Figure 6: Parametric transition vs bandwidth...")
     k1_grid_nb = np.linspace(0.001, 25.0, 250)
     sigmas = [0.3, 0.6, 1.2, 2.5]
+    colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728']
+    linestyles = ['-', '--', '-.', ':']
+    dashes_list = [None, (6, 3), (7, 2, 2, 2), (2, 2.5)]
+    markers = ['o', 's', '^', 'D']
+    linewidths = [2.0, 2.0, 2.0, 2.2]
     r_scan = np.linspace(0.001, 2.5, 200)
     min_f_vals = []
     sigma_dense = np.linspace(0.25, 4.0, 16)
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(7.6, 3.4))
 
-    for s in sigmas:
+    for i, (s, col, ls, dash, mkr, lw) in enumerate(zip(sigmas, colors, linestyles, dashes_list, markers, linewidths)):
         E11_arr = np.zeros_like(k1_grid_nb)
-        for i, k1 in enumerate(k1_grid_nb):
+        for j, k1 in enumerate(k1_grid_nb):
             integrand = lambda k: (narrowband_batchelor(k, sigma=s)/k) * (1.0 - (k1**2)/(k**2))
-            E11_arr[i], _ = integrate.quad(integrand, k1, 30.0, limit=200)
+            E11_arr[j], _ = integrate.quad(integrand, k1, 30.0, limit=200)
         
         interp_s = interp1d(k1_grid_nb, E11_arr, kind='cubic', bounds_error=False, fill_value=0.0)
         norm_s, _ = integrate.quad(interp_s, 0.0, 25.0, limit=200)
         
         f_arr = np.zeros_like(r_scan)
-        for i, r in enumerate(r_scan):
+        for j, r in enumerate(r_scan):
             integrand = lambda k1: interp_s(k1) * np.cos(k1 * r)
             val, _ = integrate.quad(integrand, 0.0, 25.0, limit=200)
-            f_arr[i] = val / norm_s
+            f_arr[j] = val / norm_s
             
-        ax1.plot(r_scan, f_arr, lw=1.8, label=rf'$\sigma = {s}$')
+        mkr_start = i * 5 + 6
+        line, = ax1.plot(r_scan, f_arr, color=col, linestyle=ls, lw=lw, marker=mkr, markevery=(mkr_start, 22), markersize=5, label=rf'$\sigma = {s}$')
+        if dash is not None:
+            line.set_dashes(dash)
 
     ax1.axhline(0, color='black', lw=0.8, ls=':')
     ax1.set_xlabel(r'Separation $r$')

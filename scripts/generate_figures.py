@@ -19,6 +19,7 @@ import fig3_vkp_correlation
 import fig4_narrowband_counterexample
 import fig5_flow_realization
 import fig6_parametric_bandwidth
+import fig7_spectral_broadening_dynamics
 
 MODULES = [
     ("Figure 0: Sedov Solution", fig0_sedov_solution),
@@ -28,6 +29,7 @@ MODULES = [
     ("Figure 4: Narrowband Counterexample", fig4_narrowband_counterexample),
     ("Figure 5: 2D Flow Realization", fig5_flow_realization),
     ("Figure 6: Parametric Bandwidth", fig6_parametric_bandwidth),
+    ("Figure 7: Spectral Broadening Dynamics", fig7_spectral_broadening_dynamics),
 ]
 
 

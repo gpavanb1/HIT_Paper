@@ -90,8 +90,8 @@ def generate_figure():
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(7.6, 3.4))
 
-    ax1.plot(r_fine, f_fine, 'C0-', lw=1.8, label=r'Exact Quad: $f(r) \geq 0$')
-    ax1.plot(r_fft_grid[r_fft_grid <= 8.0], f_fft[r_fft_grid <= 8.0], 'C3--', lw=1.4, label='Coarse FFT (aliasing artifact)')
+    ax1.plot(r_fine, f_fine, color='#1f77b4', linestyle='-', lw=2.0, label=r'Exact Quad: $f(r) \geq 0$')
+    ax1.plot(r_fft_grid[r_fft_grid <= 8.0], f_fft[r_fft_grid <= 8.0], color='#d62728', linestyle='--', lw=1.8, label='Coarse FFT (aliasing artifact)')
     ax1.axhline(0, color='black', lw=0.8, ls=':')
     ax1.set_xlabel(r'Separation $r/L$')
     ax1.set_ylabel(r'$f(r)$')
@@ -99,7 +99,7 @@ def generate_figure():
     ax1.grid(True, alpha=0.25, linestyle='--')
     ax1.legend(frameon=True, edgecolor='none', facecolor='#f8f8f8')
 
-    ax2.semilogy(r_asymptotic, f_exact_asymptotic, 'C0-', lw=1.8, label=r'Exact analytical $K_{1/3}$ decay')
+    ax2.semilogy(r_asymptotic, f_exact_asymptotic, color='#1f77b4', linestyle='-', lw=2.0, label=r'Exact analytical $K_{1/3}$ decay')
     ax2.set_xlabel(r'Separation $r/L$')
     ax2.set_ylabel(r'$f(r)$ (log scale)')
     ax2.set_title(r'(b) Asymptotic Tail $r/L \in [0, 30]$')

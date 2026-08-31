@@ -71,18 +71,18 @@ def generate_figure():
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(7.6, 3.4))
 
-    ax1.loglog(k_vals, E_vals, 'C0-', label=r'$E(k)$ (von Kármán–Pao)')
-    ax1.plot(k1_vals, E11_vals, 'C2--', label=r'$E_{11}(k_1)$ (1D longitudinal)')
+    ax1.loglog(k_vals, E_vals, color='#1f77b4', linestyle='-', lw=2.0, label=r'$E(k)$ (von Kármán–Pao)')
+    ax1.plot(k1_vals, E11_vals, color='#2ca02c', linestyle='--', lw=2.0, label=r'$E_{11}(k_1)$ (1D longitudinal)')
     ax1.set_xlabel(r'Wavenumber $k, k_1$')
     ax1.set_ylabel(r'Energy spectrum')
     ax1.set_title(r'(a) 3D and 1D Energy Spectra')
     ax1.grid(True, which='both', alpha=0.25, linestyle='--')
     ax1.legend(frameon=True, edgecolor='none', facecolor='#f8f8f8')
 
-    ax2.plot(k1_vals, d2E11_vals, 'C3-', lw=1.8)
+    ax2.plot(k1_vals, d2E11_vals, color='#d62728', linestyle='-', lw=1.8)
     ax2.axhline(0, color='black', lw=0.8, ls=':')
-    ax2.fill_between(k1_vals, d2E11_vals, 0, where=(d2E11_vals < 0), color='C3', alpha=0.2, label=r'Concave ($d^2E_{11}/dk_1^2 < 0$)')
-    ax2.fill_between(k1_vals, d2E11_vals, 0, where=(d2E11_vals >= 0), color='C2', alpha=0.15, label=r'Convex ($d^2E_{11}/dk_1^2 \geq 0$)')
+    ax2.fill_between(k1_vals, d2E11_vals, 0, where=(d2E11_vals < 0), color='#d62728', alpha=0.2, label=r'Concave ($d^2E_{11}/dk_1^2 < 0$)')
+    ax2.fill_between(k1_vals, d2E11_vals, 0, where=(d2E11_vals >= 0), color='#2ca02c', alpha=0.15, label=r'Convex ($d^2E_{11}/dk_1^2 \geq 0$)')
     ax2.set_xlabel(r'Wavenumber $k_1$')
     ax2.set_ylabel(r'$d^2E_{11}/dk_1^2$')
     ax2.set_title(r'(b) Convexity of $E_{11}(k_1)$')

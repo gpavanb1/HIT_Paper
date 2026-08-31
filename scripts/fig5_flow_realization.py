@@ -113,6 +113,31 @@ def generate_figure():
     skip = 4
     ax.streamplot(x_coords[::skip], y_coords[::skip], u_nb[::skip, ::skip, 0].T, v_nb[::skip, ::skip, 0].T, 
                   color='black', density=1.1, linewidth=0.6, arrowsize=0.7, arrowstyle='->')
+
+    # Sample anti-correlated pairs separated by r = pi / k0 ≈ 0.31
+    # Pair 1: (x1=1.24, y=3.62) has u1 < 0 (blue) and (x2=1.56, y=3.62) has u1 > 0 (red)
+    # Pair 2: (x1=5.35, y=0.55) has u1 > 0 (red) and (x2=5.66, y=0.55) has u1 < 0 (blue)
+    pairs = [
+        {'x1': 1.24, 'x2': 1.24 + np.pi/10.0, 'y': 3.65, 'txt_offset': (0, 0.42), 'label': r'$\mathbf{x}_1, \mathbf{x}_1+r\hat{\mathbf{e}}_1$'},
+        {'x1': 5.35, 'x2': 5.35 + np.pi/10.0, 'y': 0.55, 'txt_offset': (0, 0.42), 'label': r'$\mathbf{x}_2, \mathbf{x}_2+r\hat{\mathbf{e}}_1$'}
+    ]
+    for i, p in enumerate(pairs):
+        x1, x2, y = p['x1'], p['x2'], p['y']
+        # Connecting line
+        ax.plot([x1, x2], [y, y], color='lime', lw=2.0, zorder=6, solid_capstyle='round')
+        # Dots for the two sample points
+        ax.plot(x1, y, 'o', color='lime', markeredgecolor='black', markeredgewidth=1.2, markersize=6.0, zorder=7)
+        ax.plot(x2, y, 'o', color='lime', markeredgecolor='black', markeredgewidth=1.2, markersize=6.0, zorder=7)
+        # Annotation text
+        ox, oy = p['txt_offset']
+        ax.annotate(r'Pair: $u_1 u_1 < 0$' + '\n' + r'($r \approx \pi/k_0$)', 
+                    xy=((x1 + x2)/2, y), xytext=((x1 + x2)/2 + ox, y + oy),
+                    ha='center', va='bottom', fontsize=7.8,
+                    color='black',
+                    bbox=dict(boxstyle='round,pad=0.18', facecolor='white', edgecolor='lime', alpha=0.95, lw=1.0),
+                    arrowprops=dict(arrowstyle='->', color='black', lw=0.8, shrinkA=1, shrinkB=3),
+                    zorder=8)
+
     ax.set_title(r'(a) Narrowband $u_1(\mathbf{x})$ ($k_0=10$)')
     ax.set_xlabel(r'$x_1$')
     ax.set_ylabel(r'$x_2$')
