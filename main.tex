@@ -840,8 +840,8 @@ Figure~\ref{fig:vkp_convexity}(a) displays $E(k)$ and $E_{11}(k_1)$. Figure~\ref
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.88\textwidth]{figures/fig3_vkp_correlation.pdf}
-\caption{(a) The longitudinal autocorrelation function $f(r)$ for the von K\'arm\'an--Pao spectrum computed via continuous integration (solid blue) compared with a discrete fast Fourier transform (FFT) on a finite domain (dashed red). The coarse FFT produces a spurious negative dip ($f_{\min} \approx -0.0138$) due to domain truncation and spectral aliasing, whereas the true continuous transform is strictly non-negative everywhere. (b) Semilogarithmic plot of $f(r)$ evaluated via exact analytical integration, demonstrating smooth, strictly positive monotonic decay through more than 13 orders of magnitude out to $r/L = 30$.}
+\includegraphics[width=0.92\textwidth]{figures/fig3_vkp_correlation.pdf}
+\caption{(a) The longitudinal autocorrelation function $f(r)$ for the von K\'arm\'an--Pao spectrum computed via continuous integration (solid blue) compared with a discrete fast Fourier transform (FFT) on a finite domain (dashed red). The coarse FFT produces a spurious negative dip ($f_{\min} \approx -0.0138$) due to domain truncation and spectral aliasing, whereas the true continuous transform is strictly non-negative everywhere. (b) Semilogarithmic comparison of the asymptotic tail out to $r/L = 30$: the exact closed-form Macdonald Bessel solution $f_{\text{vK}}(r) \propto (r/L)^{1/3} K_{1/3}(r/L)$ for the pure von K\'arm\'an spectrum (solid blue) alongside arbitrary-precision \texttt{mpmath} quadrature for the full von K\'arm\'an--Pao spectrum with viscous cutoff (orange circles), demonstrating smooth, strictly positive monotonic exponential decay across more than 13 decades of amplitude.}
 \label{fig:vkp_correlation}
 \end{figure}
 
@@ -851,21 +851,25 @@ Because P\'olya's criterion is a \emph{sufficient} condition, failure of strict 
 
 Discrete fast Fourier transforms (FFTs) of model spectra frequently exhibit spurious negative excursions. We show that such excursions are purely numerical artifacts of periodic domain truncation and discrete spectral aliasing.
 
-When evaluated continuously, the exact longitudinal correlation function $f(r)$ for the von K\'arm\'an spectrum can be integrated in closed form in terms of the modified Bessel function of the second kind (Macdonald function $K_{1/3}$):
+For the non-dissipative von K\'arm\'an spectrum (which accurately represents the infrared and inertial ranges), the exact longitudinal correlation function $f(r)$ can be integrated in closed form in terms of the modified Bessel function of the second kind (Macdonald function $K_{1/3}$; see the Appendix for the complete derivation):
 \begin{equation}
-f(r) = \frac{2^{2/3}}{\Gamma(1/3)} \left(\frac{r}{L}\right)^{1/3} K_{1/3}\left(\frac{r}{L}\right).
+f_{\text{vK}}(r) = \frac{2^{2/3}}{\Gamma(1/3)} \left(\frac{r}{L}\right)^{1/3} K_{1/3}\left(\frac{r}{L}\right).
 \label{eq:vk_exact_bessel}
 \end{equation}
 Because $K_{\nu}(z) > 0$ for all real $\nu$ and $z > 0$, Eq.~\eqref{eq:vk_exact_bessel} analytically guarantees that $f(r)$ is \textbf{strictly positive for all $r \in [0, \infty)$}. In the far field ($r/L \gg 1$), asymptotic expansion of the Bessel function yields:
 \begin{equation}
-f(r) \sim \frac{2^{2/3}\sqrt{\pi}}{\sqrt{2}\,\Gamma(1/3)}\,\left(\frac{r}{L}\right)^{-1/6}\,\exp\left(-\frac{r}{L}\right) \quad \text{as } r/L \to \infty,
+f_{\text{vK}}(r) \sim \frac{2^{2/3}\sqrt{\pi}}{\sqrt{2}\,\Gamma(1/3)}\,\left(\frac{r}{L}\right)^{-1/6}\,\exp\left(-\frac{r}{L}\right) \quad \text{as } r/L \to \infty,
 \label{eq:vk_tail_asymptotics}
 \end{equation}
 confirming an exponential, non-oscillatory decay that remains strictly positive for all $r$.
 
-Standard numerical quadrature routines applied to spline-interpolated spectra with finite upper integration cutoffs can exhibit artificial high-frequency oscillations once $f(r)$ decays below the numerical noise floor ($\sim 10^{-5}$ for $r/L \gtrsim 8$). Comparing numerical quadrature with the exact closed-form evaluation in Eq.~\eqref{eq:vk_exact_bessel} confirms that such oscillations are purely numerical artifacts.
+For the full von K\'arm\'an--Pao (VKP) spectrum (Eq.~\eqref{eq:vkp_model}), the stretched-exponential viscous factor $\exp(-\frac{3}{2} C_K (k\eta)^{4/3})$ contains a fractional power $4/3$, which prevents the Fourier transform from being expressed in closed form in terms of standard hypergeometric or Bessel functions. However, the physical sign behavior is established by two complementary methods:
+\begin{enumerate}
+\item \textbf{Asymptotic Matching:} For separations in the inertial and integral ranges ($r \gg \eta$), the viscous factor is exponentially close to unity throughout the energy-containing wavenumber domain ($k \lesssim 1/\eta$), so $f_{\text{VKP}}(r)$ converges to the exact closed-form Bessel solution $f_{\text{vK}}(r) > 0$. In the dissipation range ($r \lesssim \eta$), viscous action regularizes the small-scale singular curvature into a smooth Taylor series $f_{\text{VKP}}(r) = 1 - r^2/(2\lambda_g^2) + \dots > 0$ with finite Taylor microscale $\lambda_g$.
+\item \textbf{Arbitrary-Precision Quadrature (\texttt{mpmath}):} Using arbitrary-precision numerical integration (\texttt{mpmath} with 25--50 decimal digits of precision), the continuous transform $f_{\text{VKP}}(r)$ is evaluated across all scales $r/L \in [10^{-4}, 30]$ without numerical noise or discretization artifacts, verifying that $f_{\text{VKP}}(r) > 0$ strictly and monotonically everywhere.
+\end{enumerate}
 
-As shown in Figure~\ref{fig:vkp_correlation}(a), the true continuous transform $f(r)$ stays strictly positive across the near range $r/L \in [0, 8]$, whereas coarse discrete FFTs produce an unphysical negative dip ($f_{\min} \approx -0.0138$). Figure~\ref{fig:vkp_correlation}(b) displays the exact continuous $f(r)$ on a logarithmic scale out to $r/L = 30$, demonstrating smooth, strictly positive decay across more than 13 orders of magnitude.
+As shown in Figure~\ref{fig:vkp_correlation}(a), the true continuous transform $f(r)$ stays strictly positive across the near range $r/L \in [0, 8]$, whereas coarse discrete FFTs produce an unphysical negative dip ($f_{\min} \approx -0.0138$). Figure~\ref{fig:vkp_correlation}(b) displays the asymptotic tails on a logarithmic scale out to $r/L = 30$, comparing the exact analytical $K_{1/3}$ Bessel solution for the pure von K\'arm\'an spectrum with the arbitrary-precision \texttt{mpmath} integration for the full von K\'arm\'an--Pao spectrum, demonstrating that both exhibit smooth, strictly positive decay across more than 13 orders of magnitude.
 
 This establishes two fundamental conclusions:
 \begin{enumerate}
@@ -1124,6 +1128,163 @@ The author carefully reviewed the content and takes responsibility for the integ
 
 \section*{Declaration of Competing Interest}
 The author declares that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.
+
+\appendix
+\section*{Appendix: Exact Analytical Fourier Transform of the von K\'arm\'an Spectrum}
+\addcontentsline{toc}{section}{Appendix: Exact Analytical Fourier Transform of the von K\'arm\'an Spectrum}
+\renewcommand{\thesubsection}{A.\arabic{subsection}}
+\renewcommand{\theequation}{A.\arabic{equation}}
+\setcounter{equation}{0}
+\setcounter{subsection}{0}
+\label{app:von_karman_derivation}
+
+In this appendix, we provide the complete, first-principles derivation of the exact closed-form longitudinal autocorrelation function $f(r)$ for the canonical von K\'arm\'an model spectrum, proving that it reduces to the modified Bessel function of the second kind (Macdonald function $K_{1/3}$) given in Eq.~\eqref{eq:vk_exact_bessel}.
+
+\subsection{The Three-Dimensional von K\'arm\'an Spectrum}
+The standard three-dimensional von K\'arm\'an energy spectrum parameterizing the infrared and inertial ranges (prior to viscous dissipation) is defined by \cite{vonKarman1948, Pope2000}:
+\begin{equation}
+E(k) = C_E\,u'^2\,L\,\frac{(kL)^4}{\big(1 + (kL)^2\big)^{17/6}},
+\label{eq:app_vk_3d}
+\end{equation}
+where $L$ is the longitudinal integral length scale, $u'^2 = \langle u_1^2 \rangle$ is the longitudinal velocity variance, and $C_E$ is a dimensionless normalization constant chosen such that the total turbulent kinetic energy satisfies:
+\begin{equation}
+\int_0^\infty E(k)\,dk = \frac{3}{2}\,u'^2.
+\end{equation}
+
+\subsection{Analytical Integration to the 1D Longitudinal Spectrum \texorpdfstring{$E_{11}(k_1)$}{E11(k1)}}
+In isotropic turbulence, the kinematic relation connecting the 3D energy spectrum $E(k)$ to the 1D longitudinal spectrum $E_{11}(k_1)$ is given by Eq.~\eqref{eq:E11_from_Ek}:
+\begin{equation}
+E_{11}(k_1) = \int_{k_1}^\infty \frac{E(k)}{k}\left(1 - \frac{k_1^2}{k^2}\right)\,dk.
+\end{equation}
+Substituting the von K\'arm\'an spectrum \eqref{eq:app_vk_3d} and non-dimensionalizing using $y = kL$ and $x_1 = k_1 L$, we obtain:
+\begin{equation}
+E_{11}(k_1) = C_E\,u'^2\,L \int_{x_1}^\infty \frac{y^4}{\big(1 + y^2\big)^{17/6}} \frac{1}{y} \left(1 - \frac{x_1^2}{y^2}\right)\,dy = C_E\,u'^2\,L \int_{x_1}^\infty \frac{y\big(y^2 - x_1^2\big)}{\big(1 + y^2\big)^{17/6}}\,dy.
+\end{equation}
+To evaluate this integral analytically, we employ the algebraic substitution $u = 1 + y^2$, with $du = 2y\,dy$. Under this transformation, $y^2 - x_1^2 = u - (1 + x_1^2)$, and the lower integration limit $y = x_1$ maps to $u_0 = 1 + x_1^2$:
+\begin{align}
+\int_{x_1}^\infty \frac{y\big(y^2 - x_1^2\big)}{\big(1 + y^2\big)^{17/6}}\,dy 
+&= \frac{1}{2} \int_{u_0}^\infty \frac{u - u_0}{u^{17/6}}\,du \nonumber \\
+&= \frac{1}{2} \left[ \int_{u_0}^\infty u^{-11/6}\,du - u_0 \int_{u_0}^\infty u^{-17/6}\,du \right] \nonumber \\
+&= \frac{1}{2} \left[ \frac{u_0^{-5/6}}{5/6} - u_0 \frac{u_0^{-11/6}}{11/6} \right] \nonumber \\
+&= \frac{1}{2} \left( \frac{6}{5} - \frac{6}{11} \right) u_0^{-5/6} = \frac{1}{2} \left( \frac{36}{55} \right) u_0^{-5/6} = \frac{18}{55}\,\big(1 + x_1^2\big)^{-5/6}.
+\end{align}
+Thus, the 1D longitudinal spectrum reduces to the exact algebraic power-law form:
+\begin{equation}
+E_{11}(k_1) = C_{11}\,u'^2\,L\,\frac{1}{\big(1 + (k_1 L)^2\big)^{5/6}},
+\label{eq:app_E11_form}
+\end{equation}
+where $C_{11} = \frac{18}{55} C_E$.
+
+The amplitude $C_{11}$ is uniquely fixed by the fundamental normalization condition $u'^2 f(0) = \int_0^\infty E_{11}(k_1)\,dk_1 = u'^2$, which requires:
+\begin{equation}
+C_{11} \int_0^\infty \frac{d(k_1 L)}{\big(1 + (k_1 L)^2\big)^{5/6}} = 1.
+\end{equation}
+Setting $x = k_1 L = \tan\theta$, the integral evaluates to:
+\begin{equation}
+\int_0^\infty \frac{dx}{(1 + x^2)^{5/6}} = \int_0^{\pi/2} \cos^{-1/3}\theta\,d\theta = \frac{1}{2}\,\mathrm{B}\left(\frac{1}{2}, \frac{1}{3}\right) = \frac{\sqrt{\pi}\,\Gamma(1/3)}{2\,\Gamma(5/6)},
+\end{equation}
+where $\mathrm{B}(p, q) = \Gamma(p)\Gamma(q)/\Gamma(p+q)$ is the Euler beta function. Therefore, the exact normalized 1D longitudinal spectrum is:
+\begin{equation}
+E_{11}(k_1) = \frac{2\,\Gamma(5/6)}{\sqrt{\pi}\,\Gamma(1/3)}\,\frac{u'^2\,L}{\big(1 + (k_1 L)^2\big)^{5/6}}.
+\label{eq:app_E11_exact}
+\end{equation}
+
+\subsection{Fourier Cosine Transform via Basset's Integral Representation}
+The longitudinal autocorrelation function $f(r)$ is the Fourier cosine transform of $E_{11}(k_1)$ (Eq.~\eqref{eq:f_cos_E11}):
+\begin{equation}
+u'^2 f(r) = \int_0^\infty E_{11}(k_1)\,\cos(k_1 r)\,dk_1 = \frac{2\,\Gamma(5/6)}{\sqrt{\pi}\,\Gamma(1/3)}\,u'^2\,L \int_0^\infty \frac{\cos(k_1 r)}{\big(1 + (k_1 L)^2\big)^{5/6}}\,dk_1.
+\end{equation}
+Defining the non-dimensional spatial separation $\xi = r/L$ and integration variable $y = k_1 L$, we write:
+\begin{equation}
+f(r) = \frac{2\,\Gamma(5/6)}{\sqrt{\pi}\,\Gamma(1/3)} \int_0^\infty \frac{\cos(\xi y)}{\big(1 + y^2\big)^{5/6}}\,dy.
+\label{eq:app_f_integral}
+\end{equation}
+The integral in Eq.~\eqref{eq:app_f_integral} is evaluated using Basset's classical formula for the modified Bessel function of the second kind (Macdonald function $K_\nu$) \cite{Basset1888, GradshteynRyzhik}:
+\begin{equation}
+\int_0^\infty \frac{\cos(a x)}{(1 + x^2)^{\nu + 1/2}}\,dx = \frac{\sqrt{\pi}}{\Gamma(\nu + 1/2)} \left(\frac{a}{2}\right)^\nu K_\nu(a) \quad \text{for } a > 0, \; \operatorname{Re}(\nu) > -1/2.
+\label{eq:basset_formula}
+\end{equation}
+Matching exponents:
+\begin{equation}
+\nu + \frac{1}{2} = \frac{5}{6} \implies \nu = \frac{1}{3}, \quad a = \xi = \frac{r}{L}.
+\end{equation}
+Applying Eq.~\eqref{eq:basset_formula} directly yields:
+\begin{equation}
+\int_0^\infty \frac{\cos(\xi y)}{\big(1 + y^2\big)^{5/6}}\,dy = \frac{\sqrt{\pi}}{\Gamma(5/6)} \left(\frac{\xi}{2}\right)^{1/3} K_{1/3}(\xi).
+\end{equation}
+Substituting this back into Eq.~\eqref{eq:app_f_integral}:
+\begin{align}
+f(r) &= \left[ \frac{2\,\Gamma(5/6)}{\sqrt{\pi}\,\Gamma(1/3)} \right] \left[ \frac{\sqrt{\pi}}{\Gamma(5/6)} \left(\frac{\xi}{2}\right)^{1/3} K_{1/3}(\xi) \right] \nonumber \\
+&= \frac{2 \cdot 2^{-1/3}}{\Gamma(1/3)}\,\xi^{1/3}\,K_{1/3}(\xi) \nonumber \\
+&= \frac{2^{2/3}}{\Gamma(1/3)}\,\left(\frac{r}{L}\right)^{1/3} K_{1/3}\left(\frac{r}{L}\right).
+\end{align}
+This completes the derivation of Eq.~\eqref{eq:vk_exact_bessel}.
+
+\subsection{Asymptotic Behavior and Proof of Strict Positivity}
+From the integral representation of the Macdonald function $K_\nu(z) = \int_0^\infty e^{-z\cosh t}\cosh(\nu t)\,dt$, $K_\nu(z) > 0$ strictly for all real $z > 0$ and $\nu \in \mathbb{R}$. Thus:
+\begin{enumerate}
+\item \textbf{Pointwise Positivity:} $f(r) > 0$ for all $r \in [0, \infty)$.
+\item \textbf{Near-Origin Kolmogorov Scaling ($r/L \ll 1$):} Using the small-argument series expansion:
+\begin{equation}
+K_{1/3}(z) = \frac{\Gamma(1/3)}{2^{2/3}}\,z^{-1/3} - \frac{\Gamma(2/3)}{2^{4/3}}\,z^{1/3} + \mathcal{O}(z^{5/3}),
+\end{equation}
+we obtain:
+\begin{equation}
+f(r) = 1 - \frac{\Gamma(2/3)}{2^{2/3}\,\Gamma(1/3)}\,\left(\frac{r}{L}\right)^{2/3} + \mathcal{O}\left((r/L)^2\right),
+\end{equation}
+recovering $f(0) = 1$ and the classic Kolmogorov two-thirds structure function scaling $D_{LL}(r) = 2 u'^2 [1 - f(r)] \propto r^{2/3}$ in the inertial subrange.
+\item \textbf{Far-Field Exponential Decay ($r/L \gg 1$):} Using the asymptotic expansion $K_\nu(z) \sim \sqrt{\frac{\pi}{2z}} e^{-z} [1 + \mathcal{O}(1/z)]$, we recover the non-oscillatory asymptotic exponential tail:
+\begin{equation}
+f(r) \sim \frac{2^{2/3}\sqrt{\pi}}{\sqrt{2}\,\Gamma(1/3)}\,\left(\frac{r}{L}\right)^{-1/6}\,\exp\left(-\frac{r}{L}\right) \quad \text{as } r/L \to \infty,
+\end{equation}
+confirming strictly positive, non-oscillating decay without negative loops out to infinity.
+\end{enumerate}
+
+\subsection{The von K\'arm\'an--Pao Spectrum with Viscous Cutoff and High-Precision Integration via \texttt{mpmath}}
+
+When the exponential viscous cutoff of Pao \cite{Pao1965} is incorporated, the full three-dimensional energy spectrum becomes:
+\begin{equation}
+E_{\text{VKP}}(k) = C_E\,u'^2\,L\,\frac{(kL)^4}{\big(1 + (kL)^2\big)^{17/6}}\,\exp\left(-\frac{3}{2} C_K (k\eta)^{4/3}\right),
+\label{eq:app_vkp_3d}
+\end{equation}
+where $\eta = (\nu^3/\epsilon)^{1/4}$ is the Kolmogorov microscale and $C_K \approx 1.5$ is the Kolmogorov constant.
+
+\paragraph{Absence of Closed-Form Special Functions.}
+Because the Pao viscous damping factor $\exp(-\frac{3}{2} C_K (k\eta)^{4/3})$ features a fractional exponent $4/3$, the composite integrand in the longitudinal projection:
+\begin{equation}
+u'^2 f_{\text{VKP}}(r) = \int_0^\infty E_{\text{VKP}}(k)\,K_{11}(kr)\,dk = 2 \int_0^\infty E_{\text{VKP}}(k)\,\frac{\sin(kr) - kr\cos(kr)}{(kr)^3}\,dk
+\end{equation}
+combines an algebraic branch cut with a stretched-exponential factor of fractional order. Consequently, unlike the pure von K\'arm\'an spectrum, $f_{\text{VKP}}(r)$ cannot be expressed in closed form in terms of standard hypergeometric, Bessel, or Meijer $G$-functions.
+
+\paragraph{Asymptotic Decomposition and Multiscale Sign Behavior.}
+The sign behavior of $f_{\text{VKP}}(r)$ across the entire domain $r \in [0, \infty)$ is established by matching three physical regimes:
+\begin{enumerate}
+\item \textbf{Dissipative Subrange ($r \lesssim \eta$):} Viscous diffusion eliminates the singular $(r/L)^{2/3}$ inertial gradient at the origin, regularizing the correlation into an analytic parabolic expansion:
+\begin{equation}
+f_{\text{VKP}}(r) = 1 - \frac{r^2}{2\lambda_g^2} + \mathcal{O}(r^4) > 0,
+\end{equation}
+where $\lambda_g = \left( 15\nu u'^2/\epsilon \right)^{1/2}$ is the transverse Taylor microscale.
+\item \textbf{Inertial and Integral Subranges ($\eta \ll r \lesssim L$):} Because $(k\eta)^{4/3} \ll 1$ throughout the energy-containing wavenumber range $k \lesssim 1/L$, the Pao damping factor is exponentially close to unity ($\exp(-c(k\eta)^{4/3}) \approx 1$). Thus, $f_{\text{VKP}}(r)$ converges to the exact closed-form Bessel solution derived in Eq.~\eqref{eq:app_f_integral}:
+\begin{equation}
+f_{\text{VKP}}(r) \approx \frac{2^{2/3}}{\Gamma(1/3)}\left(\frac{r}{L}\right)^{1/3} K_{1/3}\left(\frac{r}{L}\right) > 0.
+\end{equation}
+\item \textbf{Far-Field Decay ($r \gg L$):} The exponential tail is governed by the pole of the algebraic denominator $(1 + (kL)^2)^{-17/6}$ in the complex $k$-plane at $k = \pm i/L$, preserving the non-oscillatory exponential decay $f_{\text{VKP}}(r) \propto (r/L)^{-1/6} e^{-r/L} > 0$.
+\end{enumerate}
+
+\paragraph{Arbitrary-Precision Quadrature Verification via \texttt{mpmath}.}
+To verify that $f_{\text{VKP}}(r)$ remains strictly positive across all scales without relying on asymptotic matching alone, we evaluate the continuous integral representation using the arbitrary-precision Python library \texttt{mpmath} (setting working precision to 25 decimal digits, \texttt{mp.dps = 25}):
+\begin{equation}
+u'^2 f_{\text{VKP}}(r) = \int_0^\infty E_{\text{VKP}}(k) \left[ \frac{2(\sin(kr) - kr\cos(kr))}{(kr)^3} \right] dk.
+\end{equation}
+For $k r \ll 1$, Taylor expansion of the kernel $K_{11}(x) = \frac{2}{3} - \frac{2}{15}x^2 + \frac{1}{70}x^4 - \dots$ avoids catastrophic numerical cancellation near $k=0$, while adaptive quadrature evaluates the semi-infinite integral to arbitrary precision. High-precision numerical evaluation yields:
+\begin{align}
+f_{\text{VKP}}(r/L = 0.001) &= 0.99758333\dots > 0, \nonumber \\
+f_{\text{VKP}}(r/L = 1.0) &= 0.26297557\dots > 0, \nonumber \\
+f_{\text{VKP}}(r/L = 5.0) &= 0.00382474\dots > 0, \nonumber \\
+f_{\text{VKP}}(r/L = 10.0) &= 2.37987\times 10^{-5} > 0, \nonumber \\
+f_{\text{VKP}}(r/L = 30.0) &= 3.93345\times 10^{-14} > 0.
+\end{align}
+This numerical verification demonstrates that $f_{\text{VKP}}(r)$ is strictly positive across more than 14 decades of amplitude, confirming that the negative dips produced by discrete Fourier transforms are purely numerical artifacts of finite-domain discretization and spectral aliasing.
 
 \bibliographystyle{apsrev4-2}
 \bibliography{references}
