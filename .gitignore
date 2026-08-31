@@ -18,3 +18,6 @@ papers/
 
 # Input
 input/
+
+# Cache
+**/__pycache__/
