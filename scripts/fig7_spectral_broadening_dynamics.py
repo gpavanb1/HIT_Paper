@@ -2,8 +2,8 @@
 """
 Figure 7: Numerical PDE Time Evolution of Spectral Broadening and f(r, t).
 Solves the dynamic spectral energy transfer PDE (Leith spectral diffusion model):
-    dE(k,t)/dt = (1/k^2) * d/dk [ D(k,t) * k^2 * d(E/k^2)/dk ] - 2*nu*k^2*E(k,t)
-with D(k,t) = C_L * k^(11/2) * E(k,t)^(1/2).
+    dE(k,t)/dt = d/dk [ D(k,t) * (dE/dk + (5/3)*E/k) ] - 2*nu*k^2*E(k,t)
+with D(k,t) = C_L * k^(5/2) * E(k,t)^(1/2).
 Starting from our exact narrowband counterexample E_NB(k), the PDE is integrated
 using RK45 across eddy turnover times t/tau_eddy.
 """
@@ -50,7 +50,7 @@ def solve_spectral_pde():
     """
     Solves the nonlinear spectral diffusion equation (Leith 1967 model)
     expressed in logarithmic wavenumber space x = ln(k):
-    dE/dt = d/dk [ D(k) * (dE/dk - 2*E/k) ] - 2*nu*k^2*E
+    dE/dt = d/dk [ D(k) * (dE/dk + (5/3)*E/k) ] - 2*nu*k^2*E
     """
     N_k = 200
     k_grid = np.logspace(-1.0, 1.7, N_k)  # k in [0.1, 50]
