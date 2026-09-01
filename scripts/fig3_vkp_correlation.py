@@ -83,8 +83,8 @@ def compute_vkp_tail_mpmath(r_vals, L=1.0, u_rms=1.0, nu=1e-5):
         r_mp = mp.mpf(r)
         def integrand(k):
             kr = k * r_mp
-            if kr < 1e-4:
-                k11 = mp.mpf(2)/3 - (mp.mpf(2)/15)*(kr**2)
+            if kr < 1e-3:
+                k11 = mp.mpf(2)/3 - (mp.mpf(1)/15)*(kr**2) + (mp.mpf(1)/420)*(kr**4) - (mp.mpf(1)/22680)*(kr**6)
             else:
                 k11 = 2 * (mp.sin(kr) - kr * mp.cos(kr)) / (kr)**3
             return E_vkp(k) * k11
