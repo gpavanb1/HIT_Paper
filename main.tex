@@ -1,26 +1,12 @@
-\documentclass[11pt,a4paper]{article}
+\documentclass[lineno]{jfm}
 
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{lmodern}
-\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{amsmath,amssymb,amsfonts}
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{microtype}
 \usepackage{hyperref}
-\usepackage[numbers,sort&compress]{natbib}
-\usepackage{geometry}
 \usepackage{xcolor}
-\usepackage{caption}
-\usepackage{subcaption}
-
-\geometry{
-  top=2.5cm,
-  bottom=2.5cm,
-  left=2.5cm,
-  right=2.5cm
-}
 
 \hypersetup{
   colorlinks=true,
@@ -35,33 +21,41 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
-\theoremstyle{definition}
 \newtheorem{definition}{Definition}
 \newtheorem{remark}{Remark}
 
-\title{\textbf{\Large On the Non-Negativity of Longitudinal Velocity Autocorrelations in Homogeneous Isotropic Turbulence: Kinematic Constraints, Convexity, and Spectral Broadening}}
+\newenvironment{proof}[1][Proof]{\noindent\textbf{#1.} }{\hfill$\square$\medskip}
+
+\title{On the Non-Negativity of Longitudinal Velocity Autocorrelations in Homogeneous Isotropic Turbulence: Kinematic Constraints, Convexity, and Spectral Broadening}
 
 \author{
-  \textbf{Pavan B. Govindaraju}\thanks{Email: \href{mailto:pavan@splitfxm.com}{pavan@splitfxm.com}} \\
-  \textit{SplitFXM, Hyderabad, India}
+  Pavan B. Govindaraju\aff{1}\corresp{\email{pavan@splitfxm.com}}
 }
 
-\date{\today}
+\affiliation{
+  \aff{1}SplitFXM, Hyderabad, India
+}
+
+\corresau{Pavan B. Govindaraju (\email{pavan@splitfxm.com})}
+
+\lefttitle{P. B. Govindaraju}
+\righttitle{Non-Negativity of Longitudinal Velocity Autocorrelations}
 
 \begin{document}
 
 \maketitle
 
 \begin{abstract}
-A fundamental question in the statistical theory of homogeneous isotropic turbulence is whether the longitudinal velocity autocorrelation $f(r)$ remains non-negative and if it can be shown from first principles such as kinematic realizability. While incompressibility forces the transverse correlation $g(r)$ to exhibit a negative loop ($\int_0^\infty r g(r)\,dr = 0$), the sign behavior of $f(r)$ is subtle. We show that positive-definiteness via Bochner's and Schoenberg's theorems structurally fails to enforce pointwise positivity because the 3D spherical projection kernels are sign-changing. By mapping the problem to the one-dimensional spectrum $E_{11}(k_1)$ via the cosine transform and applying P\'olya's criterion, convexity of $E_{11}(k_1)$ provides a rigorous sufficient condition for $f(r) \ge 0$. While pure Kolmogorov $-5/3$ scaling is strictly convex, physically realizable spectra with Batchelor ($k^4$) or Saffman ($k^2$) infrared scaling are necessarily concave near $k_1 = 0$. For mature broadband spectra such as the von K\'arm\'an--Pao model, high-precision quadrature confirms that the convex inertial bulk dominates, yielding strictly positive tails and demonstrating that apparent negative dips are discrete Fourier artifacts. Also, we construct a smooth, divergence-free, finite-energy narrowband initial field that produces a genuine negative loop ($\min_r f(r) \approx -0.083$), serving as a counterexample to universal non-negativity. Spectral bandwidth is shown as the governing physical parameter, with nonlinear triad interactions rapidly broadening narrowband fields over an eddy turnover time, systematically suppressing negative excursions and preserving $f(r) \ge 0$ in mature turbulence.
+A fundamental question in the statistical theory of homogeneous isotropic turbulence is whether the longitudinal velocity autocorrelation $f(r)$ remains non-negative and if it can be shown from first principles such as kinematic realizability. While incompressibility forces the transverse correlation $g(r)$ to exhibit a negative loop ($\int_0^\infty r g(r)\,dr = 0$), the sign behaviour of $f(r)$ is subtle. We show that positive-definiteness via Bochner's and Schoenberg's theorems structurally fails to enforce pointwise positivity because the 3D spherical projection kernels are sign-changing. By mapping the problem to the one-dimensional spectrum $E_{11}(k_1)$ via the cosine transform and applying P\'olya's criterion, convexity of $E_{11}(k_1)$ provides a rigorous sufficient condition for $f(r) \ge 0$. While pure Kolmogorov $-5/3$ scaling is strictly convex, physically realizable spectra with Batchelor ($k^4$) or Saffman ($k^2$) infrared scaling are necessarily concave near $k_1 = 0$. For mature broadband spectra such as the von K\'arm\'an--Pao model, high-precision quadrature confirms that the convex inertial bulk dominates, yielding strictly positive tails and demonstrating that apparent negative dips are discrete Fourier artifacts. Also, we construct a smooth, divergence-free, finite-energy narrowband initial field that produces a genuine negative loop ($\min_r f(r) \approx -0.083$), serving as a counterexample to universal non-negativity. Spectral bandwidth is shown as the governing physical parameter, with nonlinear triad interactions rapidly broadening narrowband fields over an eddy turnover time, systematically suppressing negative excursions and preserving $f(r) \ge 0$ in mature turbulence.
 \end{abstract}
 
-\vspace{0.5em}
-\noindent\textbf{Keywords:} Homogeneous isotropic turbulence, velocity autocorrelations, P\'olya's criterion, Bochner's theorem, spectral broadening, grid turbulence.
+\begin{keywords}
+Homogeneous isotropic turbulence, velocity autocorrelations, P\'olya's criterion, Bochner's theorem, spectral broadening, grid turbulence
+\end{keywords}
 
 \section{Introduction}
 \label{sec:intro}
-The statistical description of homogeneous isotropic turbulence (HIT), initiated by Taylor \cite{Taylor1935} and formalized by von K\'arm\'an \& Howarth \cite{vonKarmanHowarth1938} and Robertson \cite{Robertson1940}, rests upon the two-point velocity correlation tensor
+The statistical description of homogeneous isotropic turbulence (HIT), initiated by \citet{Taylor1935} and formalized by \citet{vonKarmanHowarth1938} and \citet{Robertson1940}, rests upon the two-point velocity correlation tensor
 \begin{equation}
 R_{ij}(\mathbf{r}, t) = \langle u_i(\mathbf{x}, t) u_j(\mathbf{x} + \mathbf{r}, t) \rangle,
 \label{eq:Rij_def}
@@ -83,14 +77,14 @@ Integrating Eq.~\eqref{eq:continuity_fg} over all separation distances yields an
 \int_0^\infty r\,g(r, t)\,dr = \frac{1}{2} \Big[ r^2 f(r, t) \Big]_0^\infty = 0,
 \label{eq:g_zero_integral}
 \end{equation}
-provided that $r^2 f(r, t) \to 0$ as $r \to \infty$. Because $g(0, t) = 1 > 0$, Eq.~\eqref{eq:g_zero_integral} strictly forces $g(r, t)$ to cross zero and attain negative values over a finite interval of separations, a phenomenon ubiquitously referred to as the \emph{transverse negative loop} \cite{Batchelor1953, MoninYaglom1975, Pope2000, Davidson2004}.
+provided that $r^2 f(r, t) \to 0$ as $r \to \infty$. Because $g(0, t) = 1 > 0$, Eq.~\eqref{eq:g_zero_integral} strictly forces $g(r, t)$ to cross zero and attain negative values over a finite interval of separations, a phenomenon ubiquitously referred to as the \emph{transverse negative loop} \citep{Batchelor1953, MoninYaglom1975, Pope2000, Davidson2004}.
 
 In contrast, no such kinematic integral constraint exists for the longitudinal correlation $f(r, t)$. The longitudinal integral scale,
 \begin{equation}
 L(t) = \int_0^\infty f(r, t)\,dr,
 \label{eq:integral_scale}
 \end{equation}
-is strictly positive for all physically realizable turbulent fields. In classical self-preservation theories, Sedov \cite{Sedov1944} demonstrated that under the hypothesis of self-similar decay ($f(r, t) = f(\xi)$ with similarity variable $\xi = r/\ell(t)$), the von K\'arm\'an--Howarth equation yields an exact closed-form solution in terms of the confluent hypergeometric function of the first kind \cite{Sedov1944, Ran2009}:
+is strictly positive for all physically realizable turbulent fields. In classical self-preservation theories, \citet{Sedov1944} demonstrated that under the hypothesis of self-similar decay ($f(r, t) = f(\xi)$ with similarity variable $\xi = r/\ell(t)$), the von K\'arm\'an--Howarth equation yields an exact closed-form solution in terms of the confluent hypergeometric function of the first kind \citep{Sedov1944}:
 \begin{equation}
 f(\xi) = {}_1F_1\left(a;\, b;\, -\frac{\xi^2}{8}\right), \qquad (b > a > 0).
 \label{eq:sedov_hypergeometric}
@@ -100,29 +94,29 @@ From Kummer's integral representation,
 {}_1F_1(a;\, b;\, z) = \frac{\Gamma(b)}{\Gamma(a)\Gamma(b-a)} \int_0^1 e^{z t}\, t^{a-1} (1-t)^{b-a-1}\,dt,
 \label{eq:kummer_integral}
 \end{equation}
-it is straightforward to prove that for any $z \le 0$ (here $z = -\xi^2/8 \le 0$) with $b > a > 0$, the integrand is strictly positive on $(0, 1)$, proving that Sedov's self-similar solutions unconditionally satisfy $f(\xi) > 0$ for all $\xi \in [0, \infty)$ (shown in Figure~\ref{fig:sedov_solution}).
+it is straightforward to prove that for any $z \le 0$ (here $z = -\xi^2/8 \le 0$) with $b > a > 0$, the integrand is strictly positive on $(0, 1)$, proving that Sedov's self-similar solutions unconditionally satisfy $f(\xi) > 0$ for all $\xi \in [0, \infty)$ (shown in figure~\ref{fig:sedov_solution}).
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.68\textwidth]{figures/fig0_sedov_solution.pdf}
-\caption{The exact self-similar solution of the von K\'arm\'an--Howarth equation derived by Sedov \cite{Sedov1944}, $f(\xi) = {}_1F_1(0.8;\, 2.5;\, -\xi^2/8)$. Because Kummer's integral representation maintains a strictly positive integrand for negative arguments, self-preserving solutions are unconditionally non-negative ($f(\xi) \ge 0$).}
+\caption{The exact self-similar solution of the von K\'arm\'an--Howarth equation derived by \citet{Sedov1944}, $f(\xi) = {}_1F_1(0.8;\, 2.5;\, -\xi^2/8)$. Because Kummer's integral representation maintains a strictly positive integrand for negative arguments, self-preserving solutions are unconditionally non-negative ($f(\xi) \ge 0$).}
 \label{fig:sedov_solution}
 \end{figure}
 
-However, physical and synthetic turbulent fields are not constrained \emph{a priori} to self-preserving decay states. In textbooks and classical closure theories, $f(r)$ is nevertheless frequently depicted as a strictly non-negative function \cite{Pope2000, Frisch1996}. This raises a foundational question:
+However, physical and synthetic turbulent fields are not constrained \emph{a priori} to self-preserving decay states. In textbooks and classical closure theories, $f(r)$ is nevertheless frequently depicted as a strictly non-negative function \citep{Pope2000, Frisch1996}. This raises a foundational question:
 \begin{quote}
 \emph{Is the longitudinal velocity autocorrelation function $f(r)$ non-negative for all spatial separations $r$ from first principles of kinematic realizability, or can $f(r)$ become negative outside the self-similar class?}
 \end{quote}
 
-This question has persisted across both theoretical mechanics and experimental measurements. In experimental grid turbulence, while the lateral correlation $g(r)$ ubiquitously crosses zero to satisfy incompressibility, measured longitudinal correlations $f(r)$ in mature decay regions are consistently observed to remain non-negative within experimental uncertainty \cite{StewartTownsend1951, ComteBellotCorrsin1971, FrenkielKlebanoffHuang1979}. In their comprehensive space-time correlation measurements, Comte-Bellot \& Corrsin \cite{ComteBellotCorrsin1971} explicitly documented that full-band longitudinal correlations following the mean flow do not become negative. Furthermore, they demonstrated that apparent negative excursions in single-probe temporal autocorrelations are typically artifacts of electronic AC-coupling or high-pass filtering (which removes the zero-wavenumber energy and enforces a zero-integral constraint), whereas isolating narrow spectral bands electronically produces pronounced oscillatory negative loops. Yet, from a fundamental theoretical perspective, it has remained unsettled whether the non-negativity $f(r) \ge 0$ is a strict consequence of kinematic realizability and Navier-Stokes dynamics, or whether kinematically valid initial velocity fields can genuinely attain negative values.
+This question has persisted across both theoretical mechanics and experimental measurements. In experimental grid turbulence, while the lateral correlation $g(r)$ ubiquitously crosses zero to satisfy incompressibility, measured longitudinal correlations $f(r)$ in mature decay regions are consistently observed to remain non-negative within experimental uncertainty \citep{StewartTownsend1951, ComteBellotCorrsin1971, FrenkielKlebanoffHuang1979}. In their comprehensive space-time correlation measurements, \citet{ComteBellotCorrsin1971} explicitly documented that full-band longitudinal correlations following the mean flow do not become negative. Furthermore, they demonstrated that apparent negative excursions in single-probe temporal autocorrelations are typically artifacts of electronic AC-coupling or high-pass filtering (which removes the zero-wavenumber energy and enforces a zero-integral constraint), whereas isolating narrow spectral bands electronically produces pronounced oscillatory negative loops. Yet, from a fundamental theoretical perspective, it has remained unsettled whether the non-negativity $f(r) \ge 0$ is a strict consequence of kinematic realizability and Navier-Stokes dynamics, or whether kinematically valid initial velocity fields can genuinely attain negative values.
 
 In this work, we provide a theoretical and numerical basis to this question:
 \begin{enumerate}
-\item We show that positive definiteness in $\mathbb{R}^3$ via Bochner's and Schoenberg's theorems \cite{Bochner1959, Schoenberg1938} cannot establish $f(r) \ge 0$ because the associated projection kernels oscillate and change sign.
-\item By analyzing the one-dimensional longitudinal energy spectrum $E_{11}(k_1)$, we prove that $E_{11}(k_1)$ is \emph{unconditionally monotonically decreasing} for every realizable 3D spectrum $E(k) \ge 0$, and we establish via P\'olya's criterion \cite{Polya1949} that convexity of $E_{11}(k_1)$ is a rigorous sufficient condition for $f(r) \ge 0$.
+\item We show that positive definiteness in $\mathbb{R}^3$ via Bochner's and Schoenberg's theorems \citep{Bochner1959, Schoenberg1938} cannot establish $f(r) \ge 0$ because the associated projection kernels oscillate and change sign.
+\item By analysing the one-dimensional longitudinal energy spectrum $E_{11}(k_1)$, we prove that $E_{11}(k_1)$ is \emph{unconditionally monotonically decreasing} for every realizable 3D spectrum $E(k) \ge 0$, and we establish via P\'olya's criterion \citep{Polya1949} that convexity of $E_{11}(k_1)$ is a rigorous sufficient condition for $f(r) \ge 0$.
 \item We prove that physically admissible turbulent spectra, encompassing both the Batchelor ($E(k) \sim k^4$) and Saffman ($E(k) \sim k^2$) infrared universality classes, are necessarily concave in a finite neighborhood of the origin ($k_1 \to 0$), so P\'olya's sufficient condition is never strictly satisfied in a global sense.
 \item For mature broadband spectra (e.g., von K\'arm\'an--Pao), high-precision quadrature demonstrates that the convex inertial bulk dominates the cosine transform, ensuring $f(r) \ge 0$ and identifying previous negative dips as discrete Fourier transform (FFT) aliasing artifacts.
-\item We construct an admissible, smooth, divergence-free, finite-energy narrowband spectrum satisfying Batchelor's infrared constraint that yields a pronounced, provable negative loop ($\min_r f(r) \approx -0.083$). This demonstrates that non-self-similar, narrowband velocity fields do not fall within Sedov's non-negative class, proving that $f(r) \ge 0$ is not a universal kinematic law. This state represents a legitimate Navier-Stokes initial condition whose evolution is guaranteed by classical local existence theorems \cite{Leray1934, FujitaKato1964}, revealing that spectral broadbandness generated by nonlinear triad interactions is the fundamental physical mechanism that maintains $f(r) \ge 0$ in mature turbulent flows.
+\item We construct an admissible, smooth, divergence-free, finite-energy narrowband spectrum satisfying Batchelor's infrared constraint that yields a pronounced, provable negative loop ($\min_r f(r) \approx -0.083$). This demonstrates that non-self-similar, narrowband velocity fields do not fall within Sedov's non-negative class, proving that $f(r) \ge 0$ is not a universal kinematic law. This state represents a legitimate Navier-Stokes initial condition whose evolution is guaranteed by classical local existence theorems \citep{Leray1934, FujitaKato1964}. We also reveal that spectral broadbandness generated by nonlinear triad interactions is the fundamental physical mechanism that maintains $f(r) \ge 0$ in mature turbulent flows.
 \end{enumerate}
 
 \section{Kinematics and the Failure of Naive Positive Definiteness}
@@ -148,7 +142,7 @@ Statistical isotropy requires that under any coordinate rotation $Q \in \mathrm{
 R_{ij}(Q\mathbf{r}) = Q_{im} Q_{jn} R_{mn}(\mathbf{r}).
 \label{eq:Rij_rotation}
 \end{equation}
-By the invariant tensor representation theorem for vector-valued isotropic functions (\cite{Robertson1940}, \cite{Batchelor1953}), any second-order tensor constructed from a single vector argument $\mathbf{r}$ and the fundamental isotropic tensors ($\delta_{ij}$ and the Levi-Civita permutation symbol $\epsilon_{ijk}$) must be a linear combination of the three fundamental isotropic second-order forms:
+By the invariant tensor representation theorem for vector-valued isotropic functions \citep{Robertson1940, Batchelor1953}, any second-order tensor constructed from a single vector argument $\mathbf{r}$ and the fundamental isotropic tensors ($\delta_{ij}$ and the Levi-Civita permutation symbol $\epsilon_{ijk}$) must be a linear combination of the three fundamental isotropic second-order forms:
 \begin{equation}
 R_{ij}(\mathbf{r}) = A(r)\,\delta_{ij} + B(r)\,r_i r_j + C(r)\,\epsilon_{ijk} r_k,
 \label{eq:Rij_general_isotropic}
@@ -173,7 +167,7 @@ R_{ij}(\mathbf{r}) - R_{ij}(-\mathbf{r}) = 2C(r)\,\epsilon_{ijk} r_k = 0 \implie
 \end{equation}
 Equivalently, combining reflection invariance ($R_{ij}(\mathbf{r}) = R_{ij}(-\mathbf{r})$) with homogeneity ($R_{ij}(-\mathbf{r}) = R_{ji}(\mathbf{r})$ from Eq.~\eqref{eq:Rij_homogeneity_sym}) requires index symmetry $R_{ij}(\mathbf{r}) = R_{ji}(\mathbf{r})$. Because the Levi-Civita term is strictly antisymmetric under index transposition ($\epsilon_{jik} r_k = -\epsilon_{ijk} r_k$), its presence violates reflection symmetry unless $C(r) \equiv 0$.
 
-Physically, $C(r)$ characterizes turbulent helicity ($\langle \mathbf{u} \cdot (\nabla \times \mathbf{u}) \rangle$), a pseudoscalar that identically vanishes in mirror-symmetric isotropic turbulence. Hence, $R_{ij}(\mathbf{r})$ is strictly symmetric:
+Physically, $C(r)$ characterises turbulent helicity ($\langle \mathbf{u} \cdot (\nabla \times \mathbf{u}) \rangle$), a pseudoscalar that identically vanishes in mirror-symmetric isotropic turbulence. Hence, $R_{ij}(\mathbf{r})$ is strictly symmetric:
 \begin{equation}
 R_{ij}(\mathbf{r}) = A(r)\,\delta_{ij} + B(r)\,r_i r_j.
 \label{eq:Rij_symmetric}
@@ -208,7 +202,7 @@ Substituting $A(r) = u'^2 g(r)$ into Eq.~\eqref{eq:match_longitudinal} yields
 B(r)\,r^2 = u'^2 \big(f(r) - g(r)\big) \implies B(r) = u'^2\,\frac{f(r) - g(r)}{r^2}.
 \label{eq:solve_B}
 \end{equation}
-Substituting $A(r)$ and $B(r)$ back into Eq.~\eqref{eq:Rij_symmetric} gives the canonical tensorial form of von K\'arm\'an \& Howarth \cite{vonKarmanHowarth1938}:
+Substituting $A(r)$ and $B(r)$ back into Eq.~\eqref{eq:Rij_symmetric} gives the canonical tensorial form of \citet{vonKarmanHowarth1938}:
 \begin{equation}
 R_{ij}(\mathbf{r}) = u'^2 \left[ g(r)\,\delta_{ij} + \big(f(r) - g(r)\big)\,\frac{r_i r_j}{r^2} \right].
 \label{eq:Rij_canonical_proven}
@@ -255,7 +249,7 @@ Because the normalization requires $g(0) = 1 > 0$ and $g(r)$ is continuous, $g(r
 \subsection{Spectral Tensors and Kinematic Realizability}
 \label{subsec:spectral_tensors}
 
-In statistical fluid mechanics, the energy distribution across spatial scales is analyzed through the Fourier representation of the fluctuating velocity field $\mathbf{u}(\mathbf{x})$. The two-point velocity correlation tensor $R_{ij}(\mathbf{r}) = \langle u_i(\mathbf{x}) u_j(\mathbf{x}+\mathbf{r}) \rangle$ and the velocity spectrum tensor $\Phi_{ij}(\mathbf{k})$ form a three-dimensional Fourier transform pair:
+In statistical fluid mechanics, the energy distribution across spatial scales is analysed through the Fourier representation of the fluctuating velocity field $\mathbf{u}(\mathbf{x})$. The two-point velocity correlation tensor $R_{ij}(\mathbf{r}) = \langle u_i(\mathbf{x}) u_j(\mathbf{x}+\mathbf{r}) \rangle$ and the velocity spectrum tensor $\Phi_{ij}(\mathbf{k})$ form a three-dimensional Fourier transform pair:
 \begin{equation}
 R_{ij}(\mathbf{r}) = \iiint_{\mathbb{R}^3} \Phi_{ij}(\mathbf{k})\,e^{i \mathbf{k} \cdot \mathbf{r}}\,d\mathbf{k}, \qquad
 \Phi_{ij}(\mathbf{k}) = \frac{1}{(2\pi)^3} \iiint_{\mathbb{R}^3} R_{ij}(\mathbf{r})\,e^{-i \mathbf{k} \cdot \mathbf{r}}\,d\mathbf{r},
@@ -272,7 +266,7 @@ Under a coordinate rotation $Q \in \mathrm{SO}(3)$ (with $Q_{ik} Q_{jk} = \delta
 \Phi_{ij}(Q\mathbf{k}) = Q_{im} Q_{jn} \Phi_{mn}(\mathbf{k}).
 \label{eq:Phi_rotation}
 \end{equation}
-By the invariant tensor representation theorem for vector-valued isotropic functions (\cite{Robertson1940}, \cite{Batchelor1953}), any second-order tensor depending solely on a single vector argument $\mathbf{k}$ and the isotropic tensors ($\delta_{ij}$, $\epsilon_{ijk}$) must be expressed in terms of the scalar invariant $k = |\mathbf{k}| = \sqrt{k_m k_m}$ as:
+By the invariant tensor representation theorem for vector-valued isotropic functions \citep{Robertson1940, Batchelor1953}, any second-order tensor depending solely on a single vector argument $\mathbf{k}$ and the isotropic tensors ($\delta_{ij}$, $\epsilon_{ijk}$) must be expressed in terms of the scalar invariant $k = |\mathbf{k}| = \sqrt{k_m k_m}$ as:
 \begin{equation}
 \Phi_{ij}(\mathbf{k}) = A_s(k)\,\delta_{ij} + B_s(k)\,\frac{k_i k_j}{k^2} + C_s(k)\,\epsilon_{ijp} \frac{k_p}{k},
 \label{eq:Phi_general}
@@ -317,7 +311,7 @@ Thus, reflection symmetry eliminates the pseudo-tensor (helical) contribution, g
 \end{equation}
 
 \paragraph{3. Incompressibility / Divergence-Free Constraint:}
-Mass conservation in physical space for an incompressible fluid requires $\partial u_j / \partial x_j = 0$, which in terms of the two-point correlation tensor translates to $\partial R_{ij}(\mathbf{r}) / \partial r_j = 0$. Differentiating the inverse Fourier transform~\eqref{eq:spectral_tensor_pair}:
+Mass conservation in physical space for an incompressible fluid requires $\partial u_j / \partial x_j = 0$, which in terms of the two-point correlation tensor translates to $\partial R_{ij}(\mathbf{r}) / \partial r_j = 0$. Differentiating the inverse Fourier transform in Eq.~\eqref{eq:spectral_tensor_pair}:
 \begin{equation}
 \frac{\partial R_{ij}(\mathbf{r})}{\partial r_j} = \frac{\partial}{\partial r_j} \iiint_{\mathbb{R}^3} \Phi_{ij}(\mathbf{k})\,e^{i \mathbf{k} \cdot \mathbf{r}}\,d\mathbf{k} = \iiint_{\mathbb{R}^3} i k_j \Phi_{ij}(\mathbf{k})\,e^{i \mathbf{k} \cdot \mathbf{r}}\,d\mathbf{k} = 0.
 \end{equation}
@@ -326,7 +320,7 @@ Since this vanishing integral must hold for all separation vectors $\mathbf{r} \
 k_j \Phi_{ij}(\mathbf{k}) = 0 \quad \text{for all } \mathbf{k} \neq \mathbf{0}.
 \label{eq:fourier_continuity}
 \end{equation}
-Contracting the symmetric form~\eqref{eq:Phi_symmetric} with $k_j$:
+Contracting the symmetric form in Eq.~\eqref{eq:Phi_symmetric} with $k_j$:
 \begin{equation}
 k_j \Phi_{ij}(\mathbf{k}) = k_j \left( A_s(k)\,\delta_{ij} + B_s(k)\,\frac{k_i k_j}{k^2} \right) = A_s(k)\,k_i + B_s(k)\,\frac{k_i (k_j k_j)}{k^2} = \big[ A_s(k) + B_s(k) \big] k_i = 0.
 \end{equation}
@@ -343,12 +337,12 @@ Substituting Eq.~\eqref{eq:Bs_equals_minus_As} into Eq.~\eqref{eq:Phi_symmetric}
 where $P_{ij}(\mathbf{k}) = \delta_{ij} - k_i k_j / k^2$ is the classical orthogonal projection operator onto the solenoidal (divergence-free) subspace perpendicular to the wavevector $\mathbf{k}$.
 
 \paragraph{4. Connection to the 3D Turbulent Kinetic Energy Spectrum $E(k)$:}
-The total turbulent kinetic energy per unit mass is defined by the trace of the zero-separation correlation tensor, $R_{ii}(\mathbf{0}) = \langle u_i(\mathbf{x}) u_i(\mathbf{x}) \rangle = 3 u'^2$. Evaluating the inverse Fourier transform~\eqref{eq:spectral_tensor_pair} at $\mathbf{r} = \mathbf{0}$:
+The total turbulent kinetic energy per unit mass is defined by the trace of the zero-separation correlation tensor, $R_{ii}(\mathbf{0}) = \langle u_i(\mathbf{x}) u_i(\mathbf{x}) \rangle = 3 u'^2$. Evaluating the inverse Fourier transform in Eq.~\eqref{eq:spectral_tensor_pair} at $\mathbf{r} = \mathbf{0}$:
 \begin{equation}
 \frac{3}{2} u'^2 = \frac{1}{2} R_{ii}(\mathbf{0}) = \frac{1}{2} \iiint_{\mathbb{R}^3} \Phi_{ii}(\mathbf{k})\,d\mathbf{k}.
 \label{eq:TKE_trace_integral}
 \end{equation}
-Contracting the indices of the projected tensor~\eqref{eq:Phi_projected} yields
+Contracting the indices of the projected tensor in Eq.~\eqref{eq:Phi_projected} yields
 \begin{equation}
 \Phi_{ii}(\mathbf{k}) = A_s(k) \left( \delta_{ii} - \frac{k_i k_i}{k^2} \right) = A_s(k) (3 - 1) = 2 A_s(k).
 \end{equation}
@@ -371,7 +365,7 @@ Substituting Eq.~\eqref{eq:As_relation} into Eq.~\eqref{eq:Phi_projected} establ
 \subsubsection{Role of \texorpdfstring{$\Phi_{ij}(\mathbf{k})$}{Phi\_ij(k)} in the Analysis}
 The spectrum tensor $\Phi_{ij}(\mathbf{k})$ is the central mathematical bridge throughout this paper for three fundamental reasons:
 \begin{enumerate}
-\item \textbf{Exact Tensor Transformations to Physical Space:} It provides the exact closed-form link between the 3D spectrum $E(k)$ and physical correlations. Specifically, spherical integration of $\Phi_{ii}(\mathbf{k}) e^{i\mathbf{k}\cdot\mathbf{r}}$ yields the Schoenberg trace relation~\eqref{eq:trace_rep}, while $\Phi_{11}(\mathbf{k}) e^{i\mathbf{k}\cdot\mathbf{r}}$ directly produces the longitudinal kernel representation~\eqref{eq:f_kernel_rep}.
+\item \textbf{Exact Tensor Transformations to Physical Space:} It provides the exact closed-form link between the 3D spectrum $E(k)$ and physical correlations. Specifically, spherical integration of $\Phi_{ii}(\mathbf{k}) e^{i\mathbf{k}\cdot\mathbf{r}}$ yields the Schoenberg trace relation in Eq.~\eqref{eq:trace_rep}, while $\Phi_{11}(\mathbf{k}) e^{i\mathbf{k}\cdot\mathbf{r}}$ directly produces the longitudinal kernel representation in Eq.~\eqref{eq:f_kernel_rep}.
 \item \textbf{Derivation of the 1D Spectrum $E_{11}(k_1)$:} In Section~\ref{subsec:1d_spectrum}, the 1D longitudinal spectrum $E_{11}(k_1)$ is obtained precisely by integrating $\Phi_{11}(\mathbf{k})$ over the transverse wavenumber plane $(k_2, k_3)$, which leads directly to the fundamental integral relation $E_{11}(k_1) = \int_{k_1}^\infty \frac{E(k)}{k}\left(1 - \frac{k_1^2}{k^2}\right)dk$.
 \item \textbf{Kinematic Realizability from First Principles:}
 Physical realizability demands that any arbitrary linear combination of velocity components, $v(\mathbf{x}) = a_i u_i(\mathbf{x})$ ($\mathbf{a} \in \mathbb{C}^3$), possesses non-negative energy across all spatial scales. In spectral space, the velocity field decomposes into uncorrelated Fourier increments via Cram\'er's representation, $\mathbf{u}(\mathbf{x}) = \iiint_{\mathbb{R}^3} e^{i\mathbf{k}\cdot\mathbf{x}}\, d\hat{\mathbf{u}}(\mathbf{k})$, with $\langle d\hat{u}_i(\mathbf{k}) d\hat{u}_j^*(\mathbf{k}') \rangle = \Phi_{ij}(\mathbf{k})\,\delta(\mathbf{k}-\mathbf{k}')\,d\mathbf{k}\,d\mathbf{k}'$. The energy in an individual Fourier mode projected along $\mathbf{a}$ is therefore
@@ -379,7 +373,7 @@ Physical realizability demands that any arbitrary linear combination of velocity
 \langle |a_i d\hat{u}_i(\mathbf{k})|^2 \rangle = \Big[ a_i^* \Phi_{ij}(\mathbf{k}) a_j \Big] d\mathbf{k} \ge 0 \quad \text{for all } \mathbf{a} \in \mathbb{C}^3, \; \mathbf{k} \in \mathbb{R}^3,
 \label{eq:quadratic_form_realizability}
 \end{equation}
-which requires $\Phi_{ij}(\mathbf{k})$ to be positive semi-definite pointwise. Substituting the isotropic solenoidal form~\eqref{eq:Phi_ij_isotropic} into this quadratic form:
+which requires $\Phi_{ij}(\mathbf{k})$ to be positive semi-definite pointwise. Substituting the isotropic solenoidal form in Eq.~\eqref{eq:Phi_ij_isotropic} into this quadratic form:
 \begin{equation}
 a_i^* \Phi_{ij}(\mathbf{k}) a_j = \frac{E(k)}{4\pi k^2}\, a_i^* P_{ij}(\mathbf{k}) a_j = \frac{E(k)}{4\pi k^2} \left( |\mathbf{a}|^2 - \frac{|\mathbf{k} \cdot \mathbf{a}|^2}{k^2} \right) = \frac{E(k)}{4\pi k^2}\, |\mathbf{a}_\perp|^2,
 \label{eq:realizability_derivation}
@@ -396,7 +390,7 @@ E(k) \ge 0 \quad \text{for all } k \in [0, \infty).
 
 A natural theoretical question is whether the non-negativity of the 3D energy spectrum, $E(k) \ge 0$, mathematically guarantees the pointwise non-negativity of the spatial correlation functions ($f(r) \ge 0$ and $g(r) \ge 0$) via classical harmonic analysis.
 
-By Bochner's theorem \cite{Bochner1959}, a spatial correlation tensor $R_{ij}(\mathbf{r})$ is positive-definite on $\mathbb{R}^3$ if and only if it is the Fourier transform of a non-negative matrix-valued spectral measure $\Phi_{ij}(\mathbf{k}) \ge 0$. As established in Eq.~\eqref{eq:realizability_Ek}, kinematic realizability is precisely equivalent to $E(k) \ge 0$. For isotropic scalar fields, Schoenberg's representation theorem \cite{Schoenberg1938} further shows that a radial function $\psi(r)$ on $\mathbb{R}^n$ is positive-definite if and only if it admits the integral representation
+By Bochner's theorem \citep{Bochner1959}, a spatial correlation tensor $R_{ij}(\mathbf{r})$ is positive-definite on $\mathbb{R}^3$ if and only if it is the Fourier transform of a non-negative matrix-valued spectral measure $\Phi_{ij}(\mathbf{k}) \ge 0$. As established in Eq.~\eqref{eq:realizability_Ek}, kinematic realizability is precisely equivalent to $E(k) \ge 0$. For isotropic scalar fields, Schoenberg's representation theorem \citep{Schoenberg1938} further shows that a radial function $\psi(r)$ on $\mathbb{R}^n$ is positive-definite if and only if it admits the integral representation
 \begin{equation}
 \psi(r) = \int_0^\infty \Omega_n(kr)\,d\nu(k), \qquad d\nu(k) \ge 0,
 \label{eq:schoenberg_rep}
@@ -420,7 +414,7 @@ u'^2 \big[ f(r) + 2g(r) \big] &= \iiint_{\mathbb{R}^3} \Phi_{ii}(\mathbf{k})\,e^
 &= 2 \int_0^\infty E(k)\,\frac{\sin(kr)}{kr}\,dk.
 \label{eq:trace_rep}
 \end{align}
-Eq.~\eqref{eq:trace_rep} exactly matches Schoenberg's representation~\eqref{eq:schoenberg_rep} in $\mathbb{R}^3$ with the non-negative radial measure $d\nu(k) = 2E(k)\,dk \ge 0$.
+Eq.~\eqref{eq:trace_rep} exactly matches Schoenberg's representation in Eq.~\eqref{eq:schoenberg_rep} in $\mathbb{R}^3$ with the non-negative radial measure $d\nu(k) = 2E(k)\,dk \ge 0$.
 
 Similarly, for the longitudinal correlation component $R_{11}(r \mathbf{e}_1) = u'^2 f(r)$, we evaluate the inverse Fourier transform of $\Phi_{11}(\mathbf{k}) = \frac{E(k)}{4\pi k^4}(k^2 - k_1^2)$ over spherical coordinates with polar angle $\theta$ measured from the separation axis $\mathbf{e}_1$ ($k_1 = k\cos\theta$, $\mathbf{k}\cdot\mathbf{r} = kr\cos\theta$):
 \begin{align}
@@ -451,7 +445,7 @@ with $j_1(x) = (\sin x - x\cos x)/x^2$ being the spherical Bessel function of or
 \label{fig:schoenberg_kernel}
 \end{figure}
 
-Both kernels $\Omega_3(x)$ and $K_{11}(x)$ are plotted in Figure~\ref{fig:schoenberg_kernel}. As is evident:
+Both kernels $\Omega_3(x)$ and $K_{11}(x)$ are plotted in figure~\ref{fig:schoenberg_kernel}. As is evident:
 \begin{itemize}
 \item $\Omega_3(x)$ possesses its first zero at $x = \pi \approx 3.1416$ and attains a minimum of $\approx -0.2172$ at $x \approx 4.4934$.
 \item $K_{11}(x)$ crosses zero at $x \approx 4.4934$ and attains a negative minimum of $\approx -0.0543$ near $x \approx 5.7635$.
@@ -461,7 +455,7 @@ This comparison clarifies the critical distinction between positive-definiteness
 \begin{enumerate}
 \item \textbf{Positive-definiteness is guaranteed:} By Bochner's and Schoenberg's theorems, $E(k) \ge 0$ rigorously guarantees that $R_{ij}(\mathbf{r})$ is a positive-definite tensor field. This enforces standard algebraic Gram-matrix inequalities such as boundedness ($|f(r)| \le f(0) = 1$) and origin concavity ($f''(0) \le 0$).
 \item \textbf{Pointwise non-negativity is not guaranteed:} Because the projection kernels $\Omega_3(x)$ and $K_{11}(x)$ are sign-changing and exhibit substantial negative excursions, integrating them against a strictly non-negative measure $E(k) \ge 0$ does \emph{not} force either the trace $f(r) + 2g(r)$ or the longitudinal correlation $f(r)$ to remain non-negative pointwise.
-\item \textbf{Transverse vs. Longitudinal behavior:} For the transverse correlation $g(r)$, incompressibility kinematically demands a negative loop ($\int_0^\infty r g(r)\,dr = 0$, Eq.~\eqref{eq:g_zero_integral}). For the longitudinal correlation $f(r)$, three-dimensional positive-definiteness structurally fails to preclude negative values.
+\item \textbf{Transverse vs. Longitudinal behaviour:} For the transverse correlation $g(r)$, incompressibility kinematically demands a negative loop ($\int_0^\infty r g(r)\,dr = 0$, Eq.~\eqref{eq:g_zero_integral}). For the longitudinal correlation $f(r)$, three-dimensional positive-definiteness structurally fails to preclude negative values.
 \end{enumerate}
 Consequently, multidimensional harmonic analysis alone cannot resolve whether $f(r) \ge 0$, and an alternative one-dimensional formulation is required.
 
@@ -499,7 +493,7 @@ u'^2 f(r) = \int_0^\infty E_{11}(k_1)\,\cos(k_1 r)\,dk_1.
 \label{eq:f_cos_E11}
 \end{equation}
 
-Equivalently, one can arrive at this identical, cosine transform pair by applying the classical 1D Wiener-Khinchin theorem directly to the one-dimensional stationary longitudinal velocity signal $u_1(x_1)$ recorded along a spatial streamline (e.g., as measured in experimental fluid mechanics via hot-wire anemometry and Taylor's frozen-flow hypothesis \cite{Taylor1935, Pope2000}), which immediately gives the inverse transform:
+Equivalently, one can arrive at this identical, cosine transform pair by applying the classical 1D Wiener-Khinchin theorem directly to the one-dimensional stationary longitudinal velocity signal $u_1(x_1)$ recorded along a spatial streamline (e.g., as measured in experimental fluid mechanics via hot-wire anemometry and Taylor's frozen-flow hypothesis \citep{Taylor1935, Pope2000}), which immediately gives the inverse transform:
 \begin{equation}
 E_{11}(k_1) = \frac{2 u'^2}{\pi} \int_0^\infty f(r)\,\cos(k_1 r)\,dr.
 \label{eq:E11_cos_f}
@@ -574,7 +568,7 @@ Differentiating Eq.~\eqref{eq:dE11_exact} with respect to $k_1$ using the produc
 
 Unlike the first derivative, the two terms in Eq.~\eqref{eq:d2E11_exact} have \emph{opposite signs}: the local term $2E(k_1)/k_1^2$ is positive, while the non-local tail integral $-2\int_{k_1}^\infty E(k)/k^3\,dk$ is negative. Thus, convexity ($d^2 E_{11}/dk_1^2 \ge 0$) is \textbf{not automatic}; it represents a non-trivial shape condition on $E(k)$.
 
-The significance of convexity is established by P\'olya's classical theorem in harmonic analysis \cite{Polya1949}:
+The significance of convexity is established by P\'olya's classical theorem in harmonic analysis \citep{Polya1949}:
 
 \begin{theorem}[P\'olya's Criterion (1918, 1949)]
 \label{thm:polya}
@@ -654,14 +648,14 @@ In this section, we examine large-scale hydrodynamical invariants and prove that
 
 \subsection{Large-Scale Invariants and Infrared Expansions}
 
-In any real physical fluid, the Kolmogorov cascade scaling cannot extend down to $k \to 0$, as that would imply divergent total turbulent kinetic energy. The asymptotic behavior of $E(k)$ as $k \to 0$ is dictated by the conservation of large-scale hydrodynamical invariants under the Navier--Stokes equations \cite{BatchelorProudman1956, Saffman1967, Davidson2004}:
+In any real physical fluid, the Kolmogorov cascade scaling cannot extend down to $k \to 0$, as that would imply divergent total turbulent kinetic energy. The asymptotic behaviour of $E(k)$ as $k \to 0$ is dictated by the conservation of large-scale hydrodynamical invariants under the Navier-Stokes equations \citep{BatchelorProudman1956, Saffman1967, Davidson2004}:
 \begin{enumerate}
-\item \textbf{Saffman Turbulence ($E(k) \sim k^2$):} When the initial flow possesses a non-zero linear momentum or non-vanishing long-range velocity impulse correlations, the Saffman invariant $L_S = \frac{1}{4\pi} \int_{\mathbb{R}^3} \langle \mathbf{u}(\mathbf{x}) \cdot \mathbf{u}(\mathbf{x}+\mathbf{r}) \rangle\,d\mathbf{r}$ is an exact invariant of the decaying Navier--Stokes equations \cite{Saffman1967, Davidson2004}. Taylor-series expansion of the spectral tensor near $\mathbf{k} = \mathbf{0}$ yields the infrared asymptotic expansion:
+\item \textbf{Saffman Turbulence ($E(k) \sim k^2$):} When the initial flow possesses a non-zero linear momentum or non-vanishing long-range velocity impulse correlations, the Saffman invariant $L_S = \frac{1}{4\pi} \int_{\mathbb{R}^3} \langle \mathbf{u}(\mathbf{x}) \cdot \mathbf{u}(\mathbf{x}+\mathbf{r}) \rangle\,d\mathbf{r}$ is an exact invariant of the decaying Navier--Stokes equations \citep{Saffman1967, Davidson2004}. Taylor-series expansion of the spectral tensor near $\mathbf{k} = \mathbf{0}$ yields the infrared asymptotic expansion:
 \begin{equation}
 E(k) = C_S\,k^2 + C_{S,4}\,k^4 + O(k^6) \quad (k \to 0), \qquad C_S = 4\pi L_S > 0.
 \label{eq:saffman_expansion}
 \end{equation}
-\item \textbf{Batchelor--Proudman Turbulence ($E(k) \sim k^4$):} When turbulence is generated by localized, momentum-free stirring (such as passive grids in wind tunnels or impulsively stirred finite domains), the linear impulse identically vanishes ($L_S = 0$). Incompressible non-local pressure fluctuations generate quadrupolar long-range velocity correlations ($\sim r^{-5}$), establishing the invariance of Loitsianskii's integral $\Lambda = u'^2 \int_0^\infty r^4 f(r)\,dr$ and fixing the infrared expansion \cite{BatchelorProudman1956, Davidson2004}:
+\item \textbf{Batchelor--Proudman Turbulence ($E(k) \sim k^4$):} When turbulence is generated by localized, momentum-free stirring (such as passive grids in wind tunnels or impulsively stirred finite domains), the linear impulse identically vanishes ($L_S = 0$). Incompressible non-local pressure fluctuations generate quadrupolar long-range velocity correlations ($\sim r^{-5}$), establishing the invariance of Loitsianskii's integral $\Lambda = u'^2 \int_0^\infty r^4 f(r)\,dr$ and fixing the infrared expansion \citep{BatchelorProudman1956, Davidson2004}:
 \begin{equation}
 E(k) = C_B\,k^4 + C_{B,6}\,k^6 + O(k^8) \quad (k \to 0), \qquad C_B = \frac{2}{3\pi} \Lambda > 0.
 \label{eq:batchelor_expansion}
@@ -686,7 +680,7 @@ Let $E(k) \ge 0$ be physically admissible energy spectrum of homogeneous isotrop
 \lim_{k_1 \to 0^+} \frac{d^2 E_{11}(k_1)}{d k_1^2} = -2 \int_0^\infty \frac{E(k)}{k^3}\,dk = -2 I_0 < 0.
 \label{eq:batchelor_limit}
 \end{equation}
-Near the origin, the exact asymptotic behavior is:
+Near the origin, the exact asymptotic behaviour is:
 \begin{equation}
 \frac{d^2 E_{11}(k_1)}{d k_1^2} = -2 I_0 + 3 C_B\,k_1^2 + O(k_1^4) < 0 \quad \text{for all } k_1 \in \big(0, \sqrt{2I_0/(3C_B)}\,\big).
 \label{eq:batchelor_asymptotic}
@@ -803,7 +797,7 @@ Thus, throughout the entire inertial and dissipation ranges, $E_{11}(k_1)$ is \t
 
 \item \textbf{Crossover Wavenumber $k_c$:} The transition from infrared concavity ($d^2 E_{11}/dk_1^2 < 0$) to inertial convexity ($d^2 E_{11}/dk_1^2 > 0$) occurs at an intermediate inflection point $k_1 = k_c$, where $E(k_c)/k_c^2 = \int_{k_c}^\infty [E(k)/k^3]\,dk$.
 
-\item \textbf{Net Sign via Second-Derivative Integral Representation:} Integrating the cosine transform $\int_0^\infty E_{11}(k_1)\cos(k_1 r)\,dk_1$ by parts twice (noting that $E_{11}'(0) = 0$ and $E_{11}(\infty) = E_{11}'(\infty) = 0$) yields the exact identity from \eqref{eq:f_cos_E11}:
+\item \textbf{Net Sign via Second-Derivative Integral Representation:} Integrating the cosine transform $\int_0^\infty E_{11}(k_1)\cos(k_1 r)\,dk_1$ by parts twice (noting that $E_{11}'(0) = 0$ and $E_{11}(\infty) = E_{11}'(\infty) = 0$) yields the exact identity from Eq.~\eqref{eq:f_cos_E11}:
 \begin{equation}
 u'^2 f(r) = \frac{1}{r^2} \int_0^\infty \frac{d^2 E_{11}(k_1)}{d k_1^2} \big(1 - \cos(k_1 r)\big)\,dk_1.
 \label{eq:f_by_parts_second_deriv}
@@ -824,7 +818,7 @@ Because P\'olya's condition is sufficient but not necessary, failure of global c
 
 \subsection{Analysis of the von K\'arm\'an--Pao Model Spectrum}
 
-To assess the quantitative impact of this infrared concavity in a realistic broadband turbulent field, we analyze the standard von K\'arm\'an--Pao model spectrum \cite{vonKarman1948, Pao1965, Pope2000}:
+To assess the quantitative impact of this infrared concavity in a realistic broadband turbulent field, we analyse the standard von K\'arm\'an-Pao model spectrum \citep{vonKarman1948, Pao1965, Pope2000}:
 \begin{equation}
 E(k) = \alpha\,u'^2\,L\,\frac{(kL)^4}{\big(1 + (kL)^2\big)^{17/6}}\,\exp\left(-\frac{3}{2} C_K (k\eta)^{4/3}\right),
 \label{eq:vkp_model}
@@ -836,7 +830,7 @@ where $L$ is the integral length scale, $\eta = (\nu^3/\epsilon)^{1/4}$ is the K
 \item Pao exponential viscous cutoff for $k\eta \gtrsim 1$.
 \end{itemize}
 
-Figure~\ref{fig:vkp_convexity}(a) displays $E(k)$ and $E_{11}(k_1)$. Figure~\ref{fig:vkp_convexity}(b) plots the exact second derivative $d^2 E_{11}/dk_1^2$ computed via Eq.~\eqref{eq:d2E11_exact}. As predicted by Theorem~\ref{thm:infrared_concavity} given that this spectrum belongs to the Batchelor family in the infrared range, $d^2 E_{11}/dk_1^2$ is negative for $k_1 \lesssim 0.57/L$, reaching a minimum of $\approx -0.82$, before transitioning into a broad, positive convex region for $k_1 \gtrsim 0.57/L$.
+In figure~\ref{fig:vkp_convexity}(a), $E(k)$ and $E_{11}(k_1)$ are displayed, while figure~\ref{fig:vkp_convexity}(b) plots the exact second derivative $d^2 E_{11}/dk_1^2$ computed via Eq.~\eqref{eq:d2E11_exact}. As predicted by Theorem~\ref{thm:infrared_concavity} given that this spectrum belongs to the Batchelor family in the infrared range, $d^2 E_{11}/dk_1^2$ is negative for $k_1 \lesssim 0.57/L$, reaching a minimum of $\approx -0.82$, before transitioning into a broad, positive convex region for $k_1 \gtrsim 0.57/L$.
 
 \begin{figure}[t]
 \centering
@@ -861,13 +855,13 @@ f_{\text{vK}}(r) \sim \frac{2^{2/3}\sqrt{\pi}}{\sqrt{2}\,\Gamma(1/3)}\,\left(\fr
 \end{equation}
 confirming an exponential, non-oscillatory decay that remains strictly positive for all $r$.
 
-For the full von K\'arm\'an--Pao (VKP) spectrum (Eq.~\eqref{eq:vkp_model}), the stretched-exponential viscous factor $\exp(-\frac{3}{2} C_K (k\eta)^{4/3})$ contains a fractional power $4/3$, which prevents the Fourier transform from being expressed in closed form in terms of standard hypergeometric or Bessel functions. However, the physical sign behavior is established by two complementary methods:
+For the full von K\'arm\'an--Pao (VKP) spectrum (Eq.~\eqref{eq:vkp_model}), the stretched-exponential viscous factor $\exp(-\frac{3}{2} C_K (k\eta)^{4/3})$ contains a fractional power $4/3$, which prevents the Fourier transform from being expressed in closed form in terms of standard hypergeometric or Bessel functions. However, the physical sign behaviour is established by two complementary methods:
 \begin{enumerate}
-\item \textbf{Asymptotic Matching:} For separations in the inertial and integral ranges ($r \gg \eta$), the viscous factor is exponentially close to unity throughout the energy-containing wavenumber domain ($k \lesssim 1/\eta$), so $f_{\text{VKP}}(r)$ converges to the exact closed-form Bessel solution $f_{\text{vK}}(r) > 0$, as seen in Figure~\ref{fig:vkp_correlation}(b). In the dissipation range ($r \lesssim \eta$), viscous action regularizes the small-scale singular curvature into a smooth Taylor series $f_{\text{VKP}}(r) = 1 - r^2/(2\lambda_g^2) + \dots > 0$ with finite Taylor microscale $\lambda_g$.
+\item \textbf{Asymptotic Matching:} For separations in the inertial and integral ranges ($r \gg \eta$), the viscous factor is exponentially close to unity throughout the energy-containing wavenumber domain ($k \lesssim 1/\eta$), so $f_{\text{VKP}}(r)$ converges to the exact closed-form Bessel solution $f_{\text{vK}}(r) > 0$, as seen in figure~\ref{fig:vkp_correlation}(b). In the dissipation range ($r \lesssim \eta$), viscous action regularizes the small-scale singular curvature into a smooth Taylor series $f_{\text{VKP}}(r) = 1 - r^2/(2\lambda_g^2) + \dots > 0$ with finite Taylor microscale $\lambda_g$.
 \item \textbf{Arbitrary-Precision Quadrature (\texttt{mpmath}):} Using arbitrary-precision numerical integration (\texttt{mpmath} with 25--50 decimal digits of precision), the continuous transform $f_{\text{VKP}}(r)$ is evaluated across all scales $r/L \in [10^{-4}, 30]$ without numerical noise or discretization artifacts, verifying that $f_{\text{VKP}}(r) > 0$ strictly and monotonically for the considered domain.
 \end{enumerate}
 
-As shown in Figure~\ref{fig:vkp_correlation}(a), the true continuous transform $f(r)$ stays strictly positive across the near range $r/L \in [0, 8]$, whereas coarse discrete FFTs produce an unphysical negative dip ($f_{\min} \approx -0.0138$). Figure~\ref{fig:vkp_correlation}(b) displays the asymptotic tails on a logarithmic scale out to $r/L = 30$, comparing the exact analytical $K_{1/3}$ Bessel solution for the pure von K\'arm\'an spectrum with the arbitrary-precision \texttt{mpmath} integration for the full von K\'arm\'an--Pao spectrum, demonstrating that both exhibit smooth, strictly positive decay across more than 13 orders of magnitude.
+As shown in figure~\ref{fig:vkp_correlation}(a), the true continuous transform $f(r)$ stays strictly positive across the near range $r/L \in [0, 8]$, whereas coarse discrete FFTs produce an unphysical negative dip ($f_{\min} \approx -0.0138$). In figure~\ref{fig:vkp_correlation}(b), the asymptotic tails are displayed on a logarithmic scale out to $r/L = 30$, comparing the exact analytical $K_{1/3}$ Bessel solution for the pure von K\'arm\'an spectrum with the arbitrary-precision \texttt{mpmath} integration for the full von K\'arm\'an--Pao spectrum, demonstrating that both exhibit smooth, strictly positive decay across more than 13 orders of magnitude.
 
 \section{Physical Realization of a Counterexample}
 \label{sec:counterexample}
@@ -899,11 +893,11 @@ where $k_0$ is the peak wavenumber, $\sigma$ is the spectral bandwidth, $k_L$ is
 \label{fig:narrowband_counterexample}
 \end{figure}
 
-Figure~\ref{fig:narrowband_counterexample} shows the results for $k_0 = 10$, $\sigma = 0.5$, and $k_L = 1.0$:
+The results for $k_0 = 10$, $\sigma = 0.5$, and $k_L = 1.0$ are shown in figure~\ref{fig:narrowband_counterexample}:
 \begin{itemize}
-\item Figure~\ref{fig:narrowband_counterexample}(a) confirms the smooth, non-negative 3D spectrum $E(k)$.
-\item Figure~\ref{fig:narrowband_counterexample}(b) shows $E_{11}(k_1)$. Consistent with Theorem~\ref{thm:monotonicity}, $E_{11}(k_1)$ is strictly monotonically decreasing, but it possesses a sharp inflection point and an extensive concave region.
-\item Figure~\ref{fig:narrowband_counterexample}(c) shows the exact longitudinal autocorrelation $f(r)$. The function crosses zero at $r \approx 0.31$ and reaches a substantial negative minimum of
+\item In figure~\ref{fig:narrowband_counterexample}(a), the smooth, non-negative 3D spectrum $E(k)$ is confirmed.
+\item In figure~\ref{fig:narrowband_counterexample}(b), $E_{11}(k_1)$ is shown. Consistent with Theorem~\ref{thm:monotonicity}, $E_{11}(k_1)$ is strictly monotonically decreasing, but it possesses a sharp inflection point and an extensive concave region.
+\item In figure~\ref{fig:narrowband_counterexample}(c), the exact longitudinal autocorrelation $f(r)$ is shown. The function crosses zero at $r \approx 0.31$ and reaches a substantial negative minimum of
 \begin{equation}
 \min_{r} f(r) \approx -0.083 \quad \text{at } r \approx 0.47.
 \label{eq:f_min_val}
@@ -911,7 +905,7 @@ Figure~\ref{fig:narrowband_counterexample} shows the results for $k_0 = 10$, $\s
 \end{itemize}
 This negative excursion is an $8.3\%$ negative loop, an order of magnitude larger than any numerical precision threshold, showing that $f(r) \ge 0$ is \textbf{not a universal theorem of realizability}.
 
-Crucially, this narrowband state does \emph{not} fall under the class of self-similar / self-preserving decay solutions studied by Sedov \cite{Sedov1944} (cf.~Section~\ref{sec:intro} and Figure~\ref{fig:sedov_solution}). Sedov's analytical solution assumes complete similarity across all scales ($f(r, t) = f(r/\ell(t))$), which locks the spectral shape into a self-preserving form whose Kummer representation enforces pointwise positivity ($f \ge 0$). In contrast, this narrowband initial field features an isolated characteristic spectral length scale ($1/k_0$) that breaks global self-similarity, allowing the oscillatory cosine transform of the non-convex spectrum $E_{11}(k_1)$ to emerge unsuppressed as a genuine physical negative loop.
+Crucially, this narrowband state does \emph{not} fall under the class of self-similar / self-preserving decay solutions studied by \citet{Sedov1944} (cf.~Section~\ref{sec:intro} and figure~\ref{fig:sedov_solution}). Sedov's analytical solution assumes complete similarity across all scales ($f(r, t) = f(r/\ell(t))$), which locks the spectral shape into a self-preserving form whose Kummer representation enforces pointwise positivity ($f \ge 0$). In contrast, this narrowband initial field features an isolated characteristic spectral length scale ($1/k_0$) that breaks global self-similarity, allowing the oscillatory cosine transform of the non-convex spectrum $E_{11}(k_1)$ to emerge unsuppressed as a genuine physical negative loop.
 
 \subsection{Navier--Stokes Admissibility and Local Well-Posedness}
 
@@ -922,7 +916,7 @@ Is this counterexample merely an abstract mathematical construct, or does it cor
 \label{eq:navier_stokes}
 \end{equation}
 
-By classical existence theory for the Navier--Stokes initial value problem (Leray \cite{Leray1934}; Fujita \& Kato \cite{FujitaKato1964}):
+By classical existence theory for the Navier-Stokes initial value problem \citep{Leray1934, FujitaKato1964}:
 \begin{proposition}[Admissibility as Initial Data]
 Let $\mathbf{u}_0(\mathbf{x}) \in H^s(\mathbb{R}^3)$ with $s > 3/2$ be a smooth, divergence-free vector field with compact or Gaussian-decaying spectral support conforming to the energy spectrum $E_{\text{NB}}(k)$ in Eq.~\eqref{eq:narrowband_spectrum}. Then there exists a unique, smooth strong solution $\mathbf{u}(\mathbf{x}, t) \in C([0, T^*); H^s(\mathbb{R}^3))$ for a finite time $T^* > 0$.
 \end{proposition}
@@ -959,11 +953,11 @@ Thus, the narrowband counterexample is not an abstract mathematical artifact, bu
 \label{fig:flow_realization}
 \end{figure}
 
-Figure~\ref{fig:flow_realization} visualizes 2D cross-sections of the resulting physical flow field:
+Cross-sections (2D) of the resulting physical flow field are visualized in figure~\ref{fig:flow_realization}:
 \begin{itemize}
-\item Figure~\ref{fig:flow_realization}(a) displays the longitudinal velocity field $u_1(\mathbf{x})$ and streamlines for the narrowband state ($k_0 = 10$, $\sigma = 0.5$). The spectral concentration around $k_0$ manifests in physical space as a quasi-regular pattern of counter-flowing velocity lanes separated by a characteristic distance $\Delta x_1 \approx \pi/k_0 \approx 0.31$. Two points separated by $r \approx 0.31\text{--}0.47$ along the $x_1$ axis frequently reside in opposing velocity lanes, providing an intuitive physical picture for the origin of the negative loop in $f(r)$.
-\item Figure~\ref{fig:flow_realization}(b) shows the corresponding out-of-plane vorticity field $\omega_3(\mathbf{x})$, revealing an organized array of compact, alternating-sign vortex cores of characteristic diameter $d \approx \pi/k_0$.
-\item Figure~\ref{fig:flow_realization}(c) shows the broadband von K\'arm\'an--Pao field for direct comparison. In contrast to the single-scale cellular pattern of the narrowband state, the broadband field exhibits a rich multi-scale hierarchy where energy distributed across the Kolmogorov cascade ($k^{-5/3}$) suppresses isolated negative correlations.
+\item In figure~\ref{fig:flow_realization}(a), the longitudinal velocity field $u_1(\mathbf{x})$ and streamlines for the narrowband state ($k_0 = 10$, $\sigma = 0.5$) are displayed. The spectral concentration around $k_0$ manifests in physical space as a quasi-regular pattern of counter-flowing velocity lanes separated by a characteristic distance $\Delta x_1 \approx \pi/k_0 \approx 0.31$. Two points separated by $r \approx 0.31\text{--}0.47$ along the $x_1$ axis frequently reside in opposing velocity lanes, providing an intuitive physical picture for the origin of the negative loop in $f(r)$.
+\item In figure~\ref{fig:flow_realization}(b), the corresponding out-of-plane vorticity field $\omega_3(\mathbf{x})$ is shown, revealing an organized array of compact, alternating-sign vortex cores of characteristic diameter $d \approx \pi/k_0$.
+\item In figure~\ref{fig:flow_realization}(c), the broadband von K\'arm\'an--Pao field is shown for direct comparison. In contrast to the single-scale cellular pattern of the narrowband state, the broadband field exhibits a rich multi-scale hierarchy where energy distributed across the Kolmogorov cascade ($k^{-5/3}$) suppresses isolated negative correlations.
 \end{itemize}
 
 \begin{figure}[t]
@@ -979,7 +973,7 @@ Figure~\ref{fig:flow_realization} visualizes 2D cross-sections of the resulting 
 The mathematical condition separating positive $f(r)$ from negative-loop states is the \textbf{spectral bandwidth} of the turbulent field. We now make this dynamical mechanism concrete by examining how non-linear Navier-Stokes evolution transforms an initially narrow-band counterexample into a broadband, non-negative state over time.
 
 \paragraph{Classical Background on Triadic Spectral Transfer and Closure Models.}
-In statistical turbulence theory, the redistribution of kinetic energy across wavenumbers is governed by the Lin equation (the spectral counterpart of the K\'arm\'an--Howarth equation \cite{vonKarmanHowarth1938, Lin1947}):
+In statistical turbulence theory, the redistribution of kinetic energy across wavenumbers is governed by the Lin equation (the spectral counterpart of the K\'arm\'an-Howarth equation \citep{vonKarmanHowarth1938, Lin1947}):
 \begin{equation}
 \frac{\partial E(k,t)}{\partial t} = T(k,t) - 2\nu k^2 E(k,t),
 \label{eq:lin_equation}
@@ -989,18 +983,18 @@ where $\nu$ is the kinematic viscosity and $T(k,t)$ is the non-linear spectral e
 T(k,t) = \iint_{\Delta_k} S(k, p, q, t)\,dp\,dq = -\frac{\partial \Pi(k,t)}{\partial k},
 \label{eq:triad_transfer}
 \end{equation}
-where $\Delta_k = \{(p,q) : |p-q| \le k \le p+q\}$ is the triangular integration domain in wavenumber space, $S(k,p,q,t)$ is the detailed triadic transfer kernel derived from the advective non-linearity $(\mathbf{u}\cdot\nabla)\mathbf{u}$, and $\Pi(k,t) = \int_k^\infty T(k',t)\,dk'$ is the spectral energy flux across wavenumber $k$ \cite{ProudmanReid1954}. Because advection merely redistributes kinetic energy among modes without creating or destroying it, detailed triad conservation ($S(k,p,q) + S(p,q,k) + S(q,k,p) = 0$) enforces global energy conservation by non-linear transfer:
+where $\Delta_k = \{(p,q) : |p-q| \le k \le p+q\}$ is the triangular integration domain in wavenumber space, $S(k,p,q,t)$ is the detailed triadic transfer kernel derived from the advective non-linearity $(\mathbf{u}\cdot\nabla)\mathbf{u}$, and $\Pi(k,t) = \int_k^\infty T(k',t)\,dk'$ is the spectral energy flux across wavenumber $k$ \citep{ProudmanReid1954}. Because advection merely redistributes kinetic energy among modes without creating or destroying it, detailed triad conservation ($S(k,p,q) + S(p,q,k) + S(q,k,p) = 0$) enforces global energy conservation by non-linear transfer:
 \begin{equation}
 \int_0^\infty T(k,t)\,dk = 0, \qquad \Pi(0,t) = \Pi(\infty,t) = 0.
 \label{eq:transfer_conservation}
 \end{equation}
 
-Because the exact triadic kernel $S(k,p,q,t)$ involves third-order velocity correlations (the closure problem of turbulence), the dynamical solution of Eq.~\eqref{eq:lin_equation} requires a spectral closure. In continuous spectral models of isotropic turbulence (Leith \cite{Leith1967}, Kovasznay \cite{Kovasznay1948}, and EDQNM closures \cite{Orszag1970, Lesieur2008}), the net energy flux $\Pi(k,t)$ generated by local triad interactions is represented by a nonlinear spectral diffusion process:
+Because the exact triadic kernel $S(k,p,q,t)$ involves third-order velocity correlations (the closure problem of turbulence), the dynamical solution of Eq.~\eqref{eq:lin_equation} requires a spectral closure. In continuous spectral models of isotropic turbulence \citep[e.g.][]{Leith1967, Kovasznay1948, Orszag1970, Lesieur2008}, the net energy flux $\Pi(k,t)$ generated by local triad interactions is represented by a nonlinear spectral diffusion process:
 \begin{equation}
 \Pi(k,t) = - D(k,t) \left( \frac{\partial E}{\partial k} + \frac{5}{3}\frac{E}{k} \right), \qquad D(k,t) = C_L\,k^{5/2}\sqrt{E(k,t)},
 \label{eq:leith_flux}
 \end{equation}
-where $C_L \approx 0.35$ is the dimensionless cascade constant. The formulation \eqref{eq:leith_flux} satisfies all fundamental turbulence constraints: it conserves total kinetic energy ($\int T\,dk = 0$), drives arbitrary initial non-equilibrium spectral peaks toward the stable Kolmogorov inertial-range attractor $E(k) \propto k^{-5/3}$ (where the flux becomes scale-independent, $\partial \Pi/\partial k = 0$), and models non-linear triad diffusion in wavenumber space.
+where $C_L \approx 0.35$ is the dimensionless cascade constant. The formulation in Eq.~\eqref{eq:leith_flux} satisfies all fundamental turbulence constraints: it conserves total kinetic energy ($\int T\,dk = 0$), drives arbitrary initial non-equilibrium spectral peaks toward the stable Kolmogorov inertial-range attractor $E(k) \propto k^{-5/3}$ (where the flux becomes scale-independent, $\partial \Pi/\partial k = 0$), and models non-linear triad diffusion in wavenumber space.
 
 \paragraph{Evolution of the Narrowband Counterexample Over Time.}
 Consider our kinematically admissible narrowband counterexample initialized at $t = 0$ as $E(k, 0) = E_{\text{NB}}(k)$ from Eq.~\eqref{eq:narrowband_spectrum}, concentrated around peak wavenumber $k_0$ with narrow initial bandwidth $\sigma_0 \ll k_0$. 
@@ -1009,7 +1003,7 @@ At $t = 0^+$, before viscous dissipation has significantly eroded the total ener
 \begin{enumerate}
 \item \textbf{Peak Depletion ($k \approx k_0$):} $T(k, 0) < 0$. Energy is actively drained from the narrow initial spectral core because this is where most of the energy is concentrated.
 \item \textbf{Forward Harmonic Generation ($k \approx 2k_0, 3k_0, \dots$):} $T(k, 0) > 0$. When two modes within the energetic peak interact ($\mathbf{p}, \mathbf{q} \approx \mathbf{k}_0$), their coupling generates sum wavenumbers with magnitudes up to $|\mathbf{p} + \mathbf{q}| \approx 2k_0$. Because these higher wavenumber modes are initially unpopulated, non-linear transfer actively deposits energy into them, exciting higher harmonics and seeding the forward Kolmogorov cascade.
-\item \textbf{Non-Local Infrared Induction ($k \ll k_0$):} $T(k, 0) \propto k^4 > 0$. As established by Proudman \& Reid \cite{ProudmanReid1954} and Batchelor \& Proudman \cite{BatchelorProudman1956}, non-local triadic interactions between nearly antiparallel energetic modes ($\mathbf{p} \approx -\mathbf{q} \approx \mathbf{k}_0$) couple via long-range pressure fluctuations to transfer energy into the lowest wavenumbers, dynamically generating and maintaining the characteristic Batchelor $E(k) \propto k^4$ infrared tail.
+\item \textbf{Non-Local Infrared Induction ($k \ll k_0$):} $T(k, 0) \propto k^4 > 0$. As established by \citet{ProudmanReid1954} and \citet{BatchelorProudman1956}, non-local triadic interactions between nearly antiparallel energetic modes ($\mathbf{p} \approx -\mathbf{q} \approx \mathbf{k}_0$) couple via long-range pressure fluctuations to transfer energy into the lowest wavenumbers, dynamically generating and maintaining the characteristic Batchelor $E(k) \propto k^4$ infrared tail.
 \end{enumerate}
 
 To quantify the resulting spectral broadening, we define the effective spectral bandwidth $\sigma_{\text{eff}}(t)$ via the second central moment of the energy spectrum:
@@ -1027,7 +1021,7 @@ Here $\tau_{\text{eddy}}$ is the non-linear eddy turnover time at the peak scale
 \tau_{\text{eddy}} \sim \frac{\ell_0}{v(k_0)} \sim \frac{1/k_0}{\big(k_0 E(k_0)\big)^{1/2}} = \frac{1}{\big(k_0^3 E(k_0)\big)^{1/2}} \sim \frac{1}{k_0 u'}.
 \label{eq:eddy_turnover_time}
 \end{equation}
-Equation~\eqref{eq:broadening_rate} shows that the spectral variance expands rapidly on the turnover timescale $\tau_{\text{eddy}}$, flattening the initial peak and generating broadband tails.
+Eq.~\eqref{eq:broadening_rate} shows that the spectral variance expands rapidly on the turnover timescale $\tau_{\text{eddy}}$, flattening the initial peak and generating broadband tails.
 
 \paragraph{Dynamical Eradication of the Negative Loop in Real Space.}
 How does this spectral broadening directly alter the sign of the real-space correlation $f(r, t)$? Recall the exact second-derivative integral representation from Eq.~\eqref{eq:f_by_parts_second_deriv}:
@@ -1036,11 +1030,11 @@ u'^2(t) f(r, t) = \frac{1}{r^2} \Bigg[ &\int_0^{k_c(t)} \frac{\partial^2 E_{11}(
 &+ \int_{k_c(t)}^\infty \frac{\partial^2 E_{11}(k_1, t)}{\partial k_1^2} \big(1 - \cos(k_1 r)\big)\,dk_1 \Bigg].
 \label{eq:f_evolution_integral}
 \end{align}
-At $t = 0$, the sharp peak $E_{\text{NB}}(k)$ produces a wide concave region ($\partial^2 E_{11}/\partial k_1^2 < 0$) that dominates the integral, resulting in the deep negative loop $\min_r f(r, 0) \approx -0.083$ shown in Figure~\ref{fig:narrowband_counterexample}(c). 
+At $t = 0$, the sharp peak $E_{\text{NB}}(k)$ produces a wide concave region ($\partial^2 E_{11}/\partial k_1^2 < 0$) that dominates the integral, resulting in the deep negative loop $\min_r f(r, 0) \approx -0.083$ shown in figure~\ref{fig:narrowband_counterexample}(c). 
 
 As time advances ($t \sim \tau_{\text{eddy}}$), triadic interactions broaden the spectrum, transferring energy into a Kolmogorov cascade ($E(k,t) \propto k^{-5/3}$). Because power-law cascades are strictly convex ($\partial^2 E_{11}/\partial k_1^2 > 0$, Eq.~\eqref{eq:kolmogorov_convex}), the second integral in Eq.~\eqref{eq:f_evolution_integral} grows rapidly, while the concave region is compressed to the infrared crossover scale $k_c(t) \approx 0.57/L(t)$.
 
-Figure~\ref{fig:parametric_bandwidth} presents a systematic parametric study of this transition as a function of the relative bandwidth $\sigma/k_0$. As seen in Figure~\ref{fig:parametric_bandwidth}(a), as $\sigma$ increases from $0.3$ to $2.5$, the negative undershoot systematically diminishes. Figure~\ref{fig:parametric_bandwidth}(b) plots the minimum value $\min_r f(r)$ versus relative bandwidth $\sigma/k_0$:
+In figure~\ref{fig:parametric_bandwidth}, a systematic parametric study of this transition as a function of the relative bandwidth $\sigma/k_0$ is presented. As seen in figure~\ref{fig:parametric_bandwidth}(a), as $\sigma$ increases from $0.3$ to $2.5$, the negative undershoot systematically diminishes, while figure~\ref{fig:parametric_bandwidth}(b) plots the minimum value $\min_r f(r)$ versus relative bandwidth $\sigma/k_0$:
 \begin{itemize}
 \item For sharp narrowband spectra ($\sigma/k_0 < 0.1$), deep negative loops ($\min f(r) \approx -0.15$) occur due to strong non-convexity.
 \item As the non-linear cascade broadens the spectrum beyond the critical threshold
@@ -1058,17 +1052,17 @@ multi-scale Fourier cosine superposition overcomes the infrared concavity, compl
 \label{fig:spectral_broadening_dynamics}
 \end{figure}
 
-To directly demonstrate this time-dependent process without empirical parametrization, we numerically solve the dynamic spectral transfer initial value problem for $E(k, t)$ starting from our exact narrowband state $E_{\text{NB}}(k)$. Figure~\ref{fig:spectral_broadening_dynamics} displays the resulting time snapshots across large-eddy turnover times $t/\tau_{\text{eddy}} \in \{0.0, 0.4, 1.0, 2.5\}$:
+To directly demonstrate this time-dependent process without empirical parametrization, we numerically solve the dynamic spectral transfer initial value problem for $E(k, t)$ starting from our exact narrowband state $E_{\text{NB}}(k)$. In figure~\ref{fig:spectral_broadening_dynamics}, the resulting time snapshots across large-eddy turnover times $t/\tau_{\text{eddy}} \in \{0.0, 0.4, 1.0, 2.5\}$ are displayed:
 \begin{enumerate}
-\item As shown in Figure~\ref{fig:spectral_broadening_dynamics}(a), non-linear triad transfer rapidly depletes the initial narrowband peak at $k_0 = 10$, broadening the spectral bandwidth across wavenumber space.
-\item In Figure~\ref{fig:spectral_broadening_dynamics}(b), the sharp non-convex inflection step in $E_{11}(k_1, 0)$ is smoothed into a monotonically decaying, convex profile.
-\item In Figure~\ref{fig:spectral_broadening_dynamics}(c), the real-space correlation $f(r, t)$ steadily lifts out of the negative territory: by $t \approx 1.0\,\tau_{\text{eddy}}$, the negative loop is completely eliminated, and $f(r, t)$ remains strictly positive across all separations.
+\item As shown in figure~\ref{fig:spectral_broadening_dynamics}(a), non-linear triad transfer rapidly depletes the initial narrowband peak at $k_0 = 10$, broadening the spectral bandwidth across wavenumber space.
+\item In figure~\ref{fig:spectral_broadening_dynamics}(b), the sharp non-convex inflection step in $E_{11}(k_1, 0)$ is smoothed into a monotonically decaying, convex profile.
+\item In figure~\ref{fig:spectral_broadening_dynamics}(c), the real-space correlation $f(r, t)$ steadily lifts out of the negative territory: by $t \approx 1.0\,\tau_{\text{eddy}}$, the negative loop is completely eliminated, and $f(r, t)$ remains strictly positive across all separations.
 \end{enumerate}
 
 \paragraph{Reconciliation with Grid Turbulence Experiments.}
-This dynamical mechanism provides a complete physical reconciliation with grid turbulence experiments. In wind-tunnel experiments, initial flow separation and periodic vortex shedding behind grid bars generate velocity fluctuations with an initially concentrated wavenumber $k_0 \sim 2\pi/M$ (where $M$ is the grid mesh size). If measurements could be performed in the immediate near-field ($x/M \lesssim 2\text{--}5$), band-concentrated negative correlations would indeed be observed, as confirmed by the narrow-band electronic filtering experiments of Comte-Bellot \& Corrsin \cite{ComteBellotCorrsin1971}.
+This dynamical mechanism provides a complete physical reconciliation with grid turbulence experiments. In wind-tunnel experiments, initial flow separation and periodic vortex shedding behind grid bars generate velocity fluctuations with an initially concentrated wavenumber $k_0 \sim 2\pi/M$ (where $M$ is the grid mesh size). If measurements could be performed in the immediate near-field ($x/M \lesssim 2\text{--}5$), band-concentrated negative correlations would indeed be observed, as confirmed by the narrow-band electronic filtering experiments of \citet{ComteBellotCorrsin1971}.
 
-However, experimental measurements of the full-band longitudinal correlation $f(r)$ are invariably reported in the mature decay region downstream ($x/M \gtrsim 20\text{--}40$) \cite{StewartTownsend1951, ComteBellotCorrsin1966, ComteBellotCorrsin1971, FrenkielKlebanoffHuang1979}. The downstream transit time corresponds to
+However, experimental measurements of the full-band longitudinal correlation $f(r)$ are invariably reported in the mature decay region downstream ($x/M \gtrsim 20\text{--}40$) \citep{StewartTownsend1951, ComteBellotCorrsin1966, ComteBellotCorrsin1971, FrenkielKlebanoffHuang1979}. The downstream transit time corresponds to
 \begin{equation}
 t_{\text{transit}} = \frac{x}{U_\infty} \approx (20\text{--}40) \frac{M}{U_\infty} \gg \tau_{\text{eddy}},
 \end{equation}
@@ -1077,12 +1071,12 @@ which is several large-eddy turnover times after generation. Over this duration,
 \section{Summary of Results and Theoretical Synthesis}
 \label{sec:summary}
 
-In this section, we synthesize our mathematical theorems, physical criteria, and dynamical findings into a comparative overview summarized in Table~\ref{tab:summary}.
+In this section, we synthesize our mathematical theorems, physical criteria, and dynamical findings into a comparative overview summarized in table~\ref{tab:summary}.
 
 \begingroup
 \small
-\setlength{\tabcolsep}{4pt}
-\begin{longtable}{p{3.8cm} p{4.1cm} p{7.0cm}}
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{p{2.8cm} p{3.2cm} p{5.5cm}}
 \caption{Summary of mathematical criteria, theorems, and physical implications for the longitudinal autocorrelation function $f(r)$ in homogeneous isotropic turbulence.} \label{tab:summary} \\
 \toprule
 \textbf{Framework / Approach} & \textbf{Claim / Hypothesis} & \textbf{Status} \\
@@ -1129,15 +1123,24 @@ Our findings can be summarized as follows:
 
 These results provide a clear mathematical framework uniting kinematic realizability, harmonic analysis, Navier--Stokes dynamics, and experimental grid-turbulence observations.
 
-\section*{CRediT Authorship Contribution Statement}
-\textbf{Pavan B. Govindaraju:} Conceptualization, Methodology, Formal analysis, Investigation, Software, Validation, Visualization, Writing -- original draft, Writing -- review \& editing.
+\begin{acknowledgements}
+The author thanks colleagues for insightful discussions regarding homogeneous isotropic turbulence.
+\end{acknowledgements}
 
-\section*{Declaration of Generative AI and AI-Assisted Technologies in the Writing Process}
-During the preparation of this work, the author used AI-assisted programming environments to assist with technical typesetting in \LaTeX and Python scripts for generation of the numerical results. 
-The author carefully reviewed the content and takes responsibility for the integrity and content of the published article.
+\section*{Funding}
+This research received no specific grant from any funding agency in the public, commercial, or not-for-profit sectors.
 
 \section*{Declaration of Competing Interest}
 The author declares that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.
+
+\section*{Data Availability Statement}
+The code and scripts that support the findings and generate the figures of this study are openly available on GitHub at \url{https://github.com/gpavanb1/HIT_Paper}.
+
+\section*{Author Contributions}
+\textbf{P. B. Govindaraju:} Conceptualization, Methodology, Formal analysis, Investigation, Software, Validation, Visualization, Writing -- original draft, Writing -- review \& editing.
+
+\section*{Declaration of Generative AI and AI-Assisted Technologies}
+During the preparation of this work, the author used AI-assisted programming environments to assist with technical typesetting in \LaTeX\ and Python scripts for generating the numerical results. The author carefully reviewed the content and takes full responsibility for the integrity and content of the published article.
 
 \appendix
 \section*{Appendix: Exact Analytical Transform of the von K\'arm\'an Spectra}
@@ -1148,10 +1151,10 @@ The author declares that they have no known competing financial interests or per
 \setcounter{subsection}{0}
 \label{app:von_karman_derivation}
 
-In this appendix, we provide the first-principles derivation \cite{vonKarman1948} of the exact closed-form longitudinal autocorrelation function $f(r)$ for the canonical von K\'arm\'an model spectrum, proving that it reduces to the modified Bessel function of the second kind (Macdonald function $K_{1/3}$) given in Eq.~\eqref{eq:vk_exact_bessel}.
+In this appendix, we provide the first-principles derivation \citep{vonKarman1948} of the exact closed-form longitudinal autocorrelation function $f(r)$ for the canonical von K\'arm\'an model spectrum, proving that it reduces to the modified Bessel function of the second kind (Macdonald function $K_{1/3}$) given in Eq.~\eqref{eq:vk_exact_bessel}.
 
 \subsection{The Three-Dimensional von K\'arm\'an Spectrum}
-The standard three-dimensional von K\'arm\'an energy spectrum parameterizing the infrared and inertial ranges (prior to viscous dissipation) is defined by \cite{vonKarman1948, Pope2000}:
+The standard three-dimensional von K\'arm\'an energy spectrum parameterizing the infrared and inertial ranges (prior to viscous dissipation) is defined by \citep{vonKarman1948, Pope2000}:
 \begin{equation}
 E(k) = C_E\,u'^2\,L\,\frac{(kL)^4}{\big(1 + (kL)^2\big)^{17/6}},
 \label{eq:app_vk_3d}
@@ -1209,7 +1212,7 @@ Defining the non-dimensional spatial separation $\xi = r/L$ and integration vari
 f(r) = \frac{2\,\Gamma(5/6)}{\sqrt{\pi}\,\Gamma(1/3)} \int_0^\infty \frac{\cos(\xi y)}{\big(1 + y^2\big)^{5/6}}\,dy.
 \label{eq:app_f_integral}
 \end{equation}
-The integral in Eq.~\eqref{eq:app_f_integral} is evaluated using Basset's classical formula for the modified Bessel function of the second kind (Macdonald function $K_\nu$) \cite{Basset1888, GradshteynRyzhik}:
+The integral in Eq.~\eqref{eq:app_f_integral} is evaluated using Basset's classical formula for the modified Bessel function of the second kind (Macdonald function $K_\nu$) \citep{Basset1888, GradshteynRyzhik}:
 \begin{equation}
 \int_0^\infty \frac{\cos(a x)}{(1 + x^2)^{\nu + 1/2}}\,dx = \frac{\sqrt{\pi}}{\Gamma(\nu + 1/2)} \left(\frac{a}{2}\right)^\nu K_\nu(a) \quad \text{for } a > 0, \; \operatorname{Re}(\nu) > -1/2.
 \label{eq:basset_formula}
@@ -1253,7 +1256,7 @@ confirming strictly positive, non-oscillating decay without negative loops out t
 
 \subsection{The von K\'arm\'an--Pao Spectrum with Viscous Cutoff: Asymptotics and Numerical Investigation}
 
-When the exponential viscous cutoff of Pao \cite{Pao1965} is incorporated, the full three-dimensional energy spectrum becomes:
+When the exponential viscous cutoff of \citet{Pao1965} is incorporated, the full three-dimensional energy spectrum becomes:
 \begin{equation}
 E_{\text{VKP}}(k) = C_E\,u'^2\,L\,\frac{(kL)^4}{\big(1 + (kL)^2\big)^{17/6}}\,\exp\left(-\frac{3}{2} C_K (k\eta)^{4/3}\right),
 \label{eq:app_vkp_3d}
@@ -1268,9 +1271,9 @@ u'^2 f_{\text{VKP}}(r) = \int_0^\infty E_{\text{VKP}}(k)\,K_{11}(kr)\,dk = 2 \in
 combines a power-law factor with a stretched-exponential decay. Consequently, unlike the pure von K\'arm\'an spectrum, $f_{\text{VKP}}(r)$ cannot be expressed in closed form to the best of our knowledge.
 
 \paragraph{Asymptotic Decomposition and Multiscale Sign Behavior.}
-The sign behavior of $f_{\text{VKP}}(r)$ across the entire domain $r \in [0, \infty)$ is established by matching three physical regimes:
+The sign behaviour of $f_{\text{VKP}}(r)$ across the entire domain $r \in [0, \infty)$ is established by matching three physical regimes:
 \begin{enumerate}
-\item \textbf{Dissipative Subrange ($r \lesssim \eta$):} Viscous diffusion eliminates the singular $(r/L)^{2/3}$ inertial gradient at the origin, regularizing the correlation into an analytic parabolic expansion:
+\item \textbf{Dissipative Subrange ($r \lesssim \eta$):} Viscous diffusion eliminates the singular $(r/L)^{2/3}$ inertial gradient at the origin, regularising the correlation into an analytic parabolic expansion:
 \begin{equation}
 f_{\text{VKP}}(r) = 1 - \frac{r^2}{2\lambda_g^2} + \mathcal{O}(r^4) > 0,
 \end{equation}
@@ -1279,7 +1282,7 @@ where $\lambda_g = \left( 15\nu u'^2/\epsilon \right)^{1/2}$ is the transverse T
 \begin{equation}
 f_{\text{VKP}}(r) \approx \frac{2^{2/3}}{\Gamma(1/3)}\left(\frac{r}{L}\right)^{1/3} K_{1/3}\left(\frac{r}{L}\right) > 0.
 \end{equation}
-\item \textbf{Far-Field Decay ($r \gg L$):} Because viscous dissipation is negligible at large scales ($k \sim 1/L \ll 1/\eta$), the far-field behavior is governed by the large-argument asymptote of the Bessel solution $K_{1/3}(r/L) \sim \sqrt{\pi / (2r/L)} e^{-r/L}$, preserving the non-oscillatory exponential decay $f_{\text{VKP}}(r) \propto (r/L)^{-1/6} e^{-r/L} > 0$.
+\item \textbf{Far-Field Decay ($r \gg L$):} Because viscous dissipation is negligible at large scales ($k \sim 1/L \ll 1/\eta$), the far-field behaviour is governed by the large-argument asymptote of the Bessel solution $K_{1/3}(r/L) \sim \sqrt{\pi / (2r/L)} e^{-r/L}$, preserving the non-oscillatory exponential decay $f_{\text{VKP}}(r) \propto (r/L)^{-1/6} e^{-r/L} > 0$.
 \end{enumerate}
 
 \paragraph{Arbitrary-Precision Quadrature Verification via \texttt{mpmath}.}
@@ -1297,7 +1300,7 @@ f_{\text{VKP}}(r/L = 30.0) &= 3.66904\times 10^{-13} > 0.
 \end{align}
 This numerical verification demonstrates that $f_{\text{VKP}}(r)$ is strictly positive across more than 13 decades of amplitude, confirming that the negative dips produced by discrete Fourier transforms are purely numerical artifacts of finite-domain discretization and spectral aliasing.
 
-\bibliographystyle{apsrev4-2}
+\bibliographystyle{jfm}
 \bibliography{references}
 
 \end{document}
