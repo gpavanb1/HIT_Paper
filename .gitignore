@@ -21,3 +21,6 @@ input/
 
 # Cache
 **/__pycache__/
+
+# Submission folder
+submit
